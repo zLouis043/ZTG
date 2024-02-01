@@ -7,4 +7,3 @@
 ![TERMINAL](https://img.shields.io/badge/windows%20terminal-4D4D4D?style=for-the-badge&logo=windows%20terminal&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/zLouis043/ZTG/main)
-![GitHub top language](https://img.shields.io/github/languages/top/zLouis043/ZTG)
