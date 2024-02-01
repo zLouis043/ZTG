@@ -1,0 +1,8 @@
+#define STANDARD_ICON "ztg_icon.ico"
+
+#ifndef USE_CUSTOM_ICON
+MAINICON ICON STANDARD_ICON
+#else
+MAINICON ICON PROJ_ICON // define the .ico file for your own icon
+#endif
+

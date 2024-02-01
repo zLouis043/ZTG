@@ -1,0 +1,146 @@
+#ifndef ZTG_ZTG_DEFINES_H
+#define ZTG_ZTG_DEFINES_H
+
+#define UNICODE
+
+#define BUFF_MAX_WIDTH 640
+#define BUFF_MAX_HEIGHT 340
+
+#define color_black      0
+#define color_dark_blue  1
+#define color_dark_green 2
+#define color_light_blue 3
+#define color_dark_red   4
+#define color_magenta    5
+#define color_orange     6
+#define color_light_gray 7
+#define color_gray       8
+#define color_blue       9
+#define color_green     10
+#define color_cyan      11
+#define color_red       12
+#define color_pink      13
+#define color_yellow    14
+#define color_white     15
+
+#define KEY_0 '0'
+#define KEY_1 '1'
+#define KEY_2 '2'
+#define KEY_3 '3'
+#define KEY_4 '4'
+#define KEY_5 '5'
+#define KEY_6 '6'
+#define KEY_7 '7'
+#define KEY_8 '8'
+#define KEY_9 '9'
+
+#define KEY_A 'A'
+#define KEY_B 'B'
+#define KEY_C 'C'
+#define KEY_D 'D'
+#define KEY_E 'E'
+#define KEY_F 'F'
+#define KEY_G 'G'
+#define KEY_H 'H'
+#define KEY_I 'I'
+#define KEY_J 'J'
+#define KEY_K 'K'
+#define KEY_L 'L'
+#define KEY_M 'M'
+#define KEY_N 'N'
+#define KEY_O 'O'
+#define KEY_P 'P'
+#define KEY_Q 'Q'
+#define KEY_R 'R'
+#define KEY_S 'S'
+#define KEY_T 'T'
+#define KEY_U 'U'
+#define KEY_V 'V'
+#define KEY_W 'W'
+#define KEY_X 'X'
+#define KEY_Y 'Y'
+#define KEY_Z 'Z'
+
+#define KEY_BACKSPACE VK_BACK
+#define KEY_TAB VK_TAB
+#define KEY_RETURN VK_RETURN
+#define KEY_SHIFT VK_SHIFT
+#define KEY_ALT VK_MENU
+#define KEY_BLOCK_MAIUSC VK_CAPITAL
+#define KEY_ESCAPE VK_ESCAPE
+
+#define KEY_UP VK_UP
+#define KEY_RIGHT VK_RIGHT
+#define KEY_LEFT VK_LEFT
+#define KEY_DOWN VK_DOWN
+
+#define KEY_INSERT VK_INSERT
+#define KEY_DELETE VK_DELETE
+
+#define KEY_PLUS VK_ADD
+#define KEY_MINUS VK_SUBTRACT
+#define KEY_STAR VK_MULTIPLY
+#define KEY_SLASH VK_DIVIDE
+
+#define KEY_F1 VK_F1
+#define KEY_F2 VK_F2
+#define KEY_F3 VK_F3
+#define KEY_F4 VK_F4
+#define KEY_F5 VK_F5
+#define KEY_F6 VK_F6
+#define KEY_F7 VK_F7
+#define KEY_F8 VK_F8
+#define KEY_F9 VK_F9
+#define KEY_F10 VK_F10
+#define KEY_F11 VK_F11
+#define KEY_F12 VK_F12
+#define KEY_F13 VK_F13
+#define KEY_F14 VK_F14
+#define KEY_F15 VK_F15
+#define KEY_F16 VK_F16
+#define KEY_F17 VK_F17
+#define KEY_F18 VK_F18
+#define KEY_F19 VK_F19
+#define KEY_F20 VK_F20
+#define KEY_F21 VK_F21
+#define KEY_F22 VK_F22
+#define KEY_F23 VK_F23
+#define KEY_F24 VK_F24
+
+#define KEY_L_SHIFT VK_LSHIFT
+#define KEY_R_SHIFT VK_RSHIFT
+#define KEY_L_CONTROL VK_LCONTROL
+#define KEY_R_CONTROL VK_RCONTROL
+#define KEY_L_ALT VK_LMENU
+#define KEY_R_ALT VK_RMENU
+
+#define MOUSE_LEFT_BUTTON 0
+#define MOUSE_RIGHT_BUTTON 1
+#define MOUSE_SCROLL_WHEEL 2
+
+typedef char KeyCode;
+typedef int MouseButton;
+typedef COORD Coord;
+
+#define get_index_from_2d(x, y, width) ((y) * (width) + (x))
+
+#define ztg_throw_error_if_not(condition, filename, line, message, ...) \
+    if(condition){                                             \
+    }else{                                                          \
+        fprintf(stderr, message, __VA_ARGS__);                  \
+        fprintf(stderr, "\n\tIn %s:%zu.", filename, line);                                                        \\
+    }
+
+#define ztg_throw_error_if_not_with_action(condition, action, filename, line, message, ...) \
+    if(condition){                                             \
+    }else{                                                          \
+        fprintf(stderr, message, __VA_ARGS__);                  \
+        fprintf(stderr, "\n\tIn %s:%zu.", filename, line);                                                        \
+        do{                                                             \
+          system("pause");                                                                              \
+          (action);                                                                     \
+        }while(0) ;                                                               \
+    }
+
+
+#endif //ZTG_ZTG_DEFINES_H
