@@ -1,6 +1,6 @@
-# ZTG
+##
 ![LOGO](https://github.com/zLouis043/ZTG/blob/main/src/ZTG/resources/ztg_logo.png)
-## ZTG - Windows Console Graphics Engine 
+## Window Console Graphics Engine  
 ![CMAKE](https://img.shields.io/badge/CMake-064F8C?style=for-the-badge&logo=cmake&logoColor=white)
 ![USED LANGUAGE](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
 ![PLATFORM](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
