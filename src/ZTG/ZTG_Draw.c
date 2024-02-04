@@ -20,12 +20,13 @@ uint8_t ztg_mov_to_in_buffer_file_line(char* filename, size_t line, size_t x, si
     return window.curr_idx < window.BUFFER_MAX_IDX;
 }
 
-void ztg_mask_begin(size_t x1, size_t y1, size_t x2, size_t y2){
+void ztg_mask_begin(size_t x1, size_t y1, size_t x2, size_t y2, maskType mask_type){
     window.isMaskOn = true;
     window.mask_x1 = x1;
     window.mask_y1 = y1;
     window.mask_x2 = x2;
     window.mask_y2 = y2;
+    window.mask_type = mask_type;
 }
 
 void ztg_mask_end(){
@@ -35,15 +36,35 @@ void ztg_mask_end(){
 void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int background_color){
     ztg_mov_to(x, y);
     if(window.isMaskOn){
-        if(!window.enableWrapAround) {
-            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                window.curr_y < window.height) {
-                window.buffer[window.curr_idx].Char.UnicodeChar = c;
-                window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+        switch(window.mask_type) {
+            case INSIDE: {
+                if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
+                    if (!window.enableWrapAround) {
+                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                            window.curr_y < window.height) {
+                            window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                            window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                        }
+                    } else {
+                        window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                        window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                    }
+                }break;
             }
-        }else{
-            window.buffer[window.curr_idx].Char.UnicodeChar = c;
-            window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+            case OUTSIDE:{
+                if (x >= window.mask_x1 || x <= window.mask_x2 || y >= window.mask_y1 || y <= window.mask_y2) {
+                    if (!window.enableWrapAround) {
+                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                            window.curr_y < window.height) {
+                            window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                            window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                        }
+                    } else {
+                        window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                        window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                    }
+                }break;
+            }
         }
     }else{
         if(!window.enableWrapAround) {
@@ -62,16 +83,34 @@ void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int backgr
 void ztg_draw_pixel(size_t x, size_t y, int color){
     ztg_mov_to(x, y);
     if(window.isMaskOn){
-        if(x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2){
-            if(!window.enableWrapAround) {
-                if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                    window.curr_y < window.height) {
-                    window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                    window.buffer[window.curr_idx].Attributes = color << 4;
-                }
-            }else{
-                window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                window.buffer[window.curr_idx].Attributes = color << 4;
+        switch(window.mask_type) {
+            case INSIDE: {
+                if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
+                    if (!window.enableWrapAround) {
+                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                            window.curr_y < window.height) {
+                            window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                            window.buffer[window.curr_idx].Attributes = color << 4;
+                        }
+                    } else {
+                        window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                        window.buffer[window.curr_idx].Attributes = color << 4;
+                    }
+                }break;
+            }
+            case OUTSIDE:{
+                if (x >= window.mask_x1 && x <= window.mask_x2 && y >= window.mask_y1 && y <= window.mask_y2) {
+                    if (!window.enableWrapAround) {
+                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                            window.curr_y < window.height) {
+                            window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                            window.buffer[window.curr_idx].Attributes = color << 4;
+                        }
+                    } else {
+                        window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                        window.buffer[window.curr_idx].Attributes = color << 4;
+                    }
+                }break;
             }
         }
     }else{
@@ -572,12 +611,13 @@ void ztg_draw_char_Vec(short c, iVec2 v, int foreground_color, int background_co
     ztg_draw_char(c, v.x, v.y, foreground_color, background_color);
 }
 
-void ztg_mask_begin_Vec(iVec2 v1, iVec2 v2){
+void ztg_mask_begin_Vec(iVec2 v1, iVec2 v2, maskType mask_type){
     window.isMaskOn = true;
     window.mask_x1 = v1.x;
     window.mask_y1 = v1.y;
     window.mask_x2 = v2.x;
     window.mask_y2 = v2.y;
+    window.mask_type = mask_type;
 }
 
 void ztg_draw_pixel_Vec(iVec2 v, int color){

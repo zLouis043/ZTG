@@ -12,7 +12,7 @@ extern Window window;
 #define ztg_mov_to(x, y) \
         ztg_mov_to_in_buffer_file_line(__FILE__, __LINE__, (x), (y))
 uint8_t ztg_mov_to_in_buffer_file_line(char* filename, size_t line, size_t x, size_t y);
-void ztg_mask_begin(size_t x1, size_t y1, size_t x2, size_t y2);
+void ztg_mask_begin(size_t x1, size_t y1, size_t x2, size_t y2, maskType mask_type);
 void ztg_mask_end();
 void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int background_color);
 void ztg_draw_pixel(size_t x, size_t y, int color);
@@ -34,7 +34,7 @@ void ztg_draw_thick_triangle(int x1, int y1, int x2, int y2, int x3, int y3, int
 void ztg_draw_thick_circle(int xc, int yc, int r, int thickness, int color);
 void ztg_draw_thick_ellipse(int x0, int y0, int x1, int y1, int thickness, int color);
 
-void ztg_mask_begin_Vec(iVec2 v1, iVec2 v2);
+void ztg_mask_begin_Vec(iVec2 v1, iVec2 v2, maskType mask_type);
 void ztg_draw_char_Vec(short c, iVec2 v, int foreground_color, int background_color);
 void ztg_draw_pixel_Vec(iVec2 v, int color);
 void ztg_draw_string_Vec(char * str, iVec2 v, int foreground_color, int background_color);

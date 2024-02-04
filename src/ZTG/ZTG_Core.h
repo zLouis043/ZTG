@@ -22,6 +22,11 @@ typedef struct ztg_mouseButtons{
     bool held;
 }mouseButtons;
 
+typedef enum ztg_mask_type{
+    INSIDE,
+    OUTSIDE
+}maskType;
+
 typedef struct ztg_window Window;
 
 /*!
@@ -91,6 +96,7 @@ struct ztg_window{
 
     int background_color;
     bool isMaskOn;
+    maskType mask_type;
     size_t mask_x1, mask_y1, mask_x2, mask_y2;
 
     bool isRunning;
