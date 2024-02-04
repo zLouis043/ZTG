@@ -89,7 +89,12 @@ struct ztg_window{
     size_t BUFFER_MAX_SIZE;
     size_t BUFFER_MAX_IDX;
 
+    int background_color;
+    bool isMaskOn;
+    size_t mask_x1, mask_y1, mask_x2, mask_y2;
+
     bool isRunning;
+    bool enableWrapAround;
 
 };
 

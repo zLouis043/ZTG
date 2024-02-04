@@ -40,6 +40,8 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.isRunning = true;
     window.iter = 0;
     window.buffer_switch = true;
+    window.isMaskOn = false;
+    window.enableWrapAround = false;
 
     /*!
      * Get the std inputs handle

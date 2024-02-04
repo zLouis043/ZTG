@@ -49,8 +49,16 @@ bool ztg_is_mouse_button_hold(MouseButton mb){
     return window.mButtons[mb].held;
 }
 
+COORD ztg_get_mouse_pos(){
+    return window.mousePos;
+}
+
 void ztg_shut_app(){
     window.isRunning = false;
+}
+
+void ztg_wrap_around(bool enable){
+    window.enableWrapAround = enable;
 }
 
 #if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
