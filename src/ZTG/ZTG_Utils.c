@@ -9,6 +9,10 @@ int ztg_get_console_height(){
     return window.height;
 }
 
+Rect ztg_get_console_bounds(){
+    return window.bounds;
+}
+
 float ztg_get_elapsed_time(){
     return window.elapsed_time;
 }

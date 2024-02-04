@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <stdbool.h>
 #include "ZTG_Defines.h"
+#include "ZTG_Collisions.h"
 
 #ifndef UNICODE
 #error Please enable UNICODE for your compiler! VS: Project Properties -> General -> \
@@ -71,6 +72,7 @@ struct ztg_window{
     HANDLE handles[4];
     HANDLE handle_in;
     COORD coordBufSize;
+    Rect bounds;
 
     COORD coordBufCoord;
     SMALL_RECT srctWriteRect;
@@ -91,7 +93,6 @@ struct ztg_window{
     int iter;
 
     int FPS;
-    size_t BUFFER_MAX_SIZE;
     size_t BUFFER_MAX_IDX;
 
     int background_color;

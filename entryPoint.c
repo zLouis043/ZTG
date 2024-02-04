@@ -16,10 +16,7 @@ static void draw_commands(){
 }
 
 static void check_if_lost() {
-    if ((float)player.bounds.as_circle.center.x + player.bounds.as_circle.radius >= (float)ztg_get_console_width() ||
-        (float)player.bounds.as_circle.center.x - player.bounds.as_circle.radius <= 0 ||
-        (float)player.bounds.as_circle.center.y + player.bounds.as_circle.radius >= (float)ztg_get_console_height() ||
-        (float)player.bounds.as_circle.center.y - player.bounds.as_circle.radius <= 0) {
+    if(!ztg_is_circle_in_bounds(player.bounds.as_circle, ztg_get_console_bounds())){
         player_stats.curr_level = DEAD;
         gen_new_point = true;
         player.bounds.as_circle.center.x = 100;
@@ -27,7 +24,6 @@ static void check_if_lost() {
         player.bounds.as_circle.radius = 5;
         player.speed = 0.2f;
         new_record = player_stats.points > player_stats.high_score;
-
     }
 }
 

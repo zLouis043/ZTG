@@ -102,6 +102,12 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.title = title;
     window.coordBufSize = (COORD) {width, height};
     window.srctWriteRect = (SMALL_RECT){ 0, 0, (short)(width - 1), (short)(height - 1) };
+    window.bounds = (Rect){
+        .p1.x = 0,
+        .p1.y = 0,
+        .p2.x = width,
+        .p2.y = height
+    };
 
     /*!
      * Set the resolution of the application

@@ -694,6 +694,7 @@ void ztg_draw_thick_ellipse_Vec(iVec2 v1, iVec2 v2, int thickness, int color){
 
 void ztg_clear(int color){
     ztui_start_iteration();
+    window.background_color = color;
     for(size_t idx = 0; idx < window.width * window.height; idx++){
         window.buffer[idx].Attributes = color << 4;
     }

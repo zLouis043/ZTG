@@ -7,6 +7,7 @@ extern Window window;
 
 int ztg_get_console_width();
 int ztg_get_console_height();
+Rect ztg_get_console_bounds();
 float ztg_get_elapsed_time();
 int ztg_get_frame_count();
 bool ztg_is_key_pressed(KeyCode Key);
