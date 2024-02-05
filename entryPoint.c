@@ -195,7 +195,7 @@ void HandleInputs(){
     if(ztg_is_key_pressed_between(KEY_A, KEY_LEFT)) player_stats.dir = LEFT;
     if(ztg_is_key_pressed_between(KEY_D, KEY_RIGHT)) player_stats.dir = RIGHT;
     if(ztg_is_key_pressed(KEY_C)) show_commands = !show_commands;
-    if(ztg_is_keyboard_pressed_except(KEY_C) && ztg_is_keyboard_pressed_except(KEY_P)){
+    if(ztg_is_keyboard_pressed_except(KEY_C) && ztg_is_keyboard_pressed_except(KEY_ESCAPE)){
         if(player_stats.curr_level == MAIN_MENU){
             player_stats.curr_level = IN_GAME;
             player.bounds.as_circle.center.x = ztg_rand_range(20, ztg_get_console_width()-20);

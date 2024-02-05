@@ -2,6 +2,7 @@
 #define ZTG_ZTG_DRAW_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "ZTG_Core.h"
 #include "ZTG_Vectors.h"
@@ -9,9 +10,7 @@
 
 extern Window window;
 
-#define ztg_mov_to(x, y) \
-        ztg_mov_to_in_buffer_file_line(__FILE__, __LINE__, (x), (y))
-uint8_t ztg_mov_to_in_buffer_file_line(char* filename, size_t line, size_t x, size_t y);
+bool ztg_mov_to(size_t x, size_t y);
 void ztg_mask_begin(size_t x1, size_t y1, size_t x2, size_t y2, maskType mask_type);
 void ztg_mask_end();
 void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int background_color);

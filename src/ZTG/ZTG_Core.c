@@ -13,12 +13,12 @@
 
 Window window;
 
-void ztui_start_iteration(){
+void ztg_start_iteration(){
     window.time_point_1 = clock();
     window.time_point_2 = clock();
 }
 
-void ztui_end_iteration(){
+void ztg_end_iteration(){
     window.time_point_2 = clock();
     window.elapsed_time = ((float)(window.time_point_2 - window.time_point_1) / CLOCKS_PER_SEC) * 1000.0f;
     window.FPS = (int)(1.0f / window.elapsed_time);
@@ -42,6 +42,7 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.buffer_switch = true;
     window.isMaskOn = false;
     window.enableWrapAround = false;
+    window.BUFFER_MAX_IDX = width * height - 1;
 
     /*!
      * Get the std inputs handle
@@ -159,7 +160,7 @@ void ztg_swap_buffer(){
             window.coordBufCoord,    //! Coordinates of the console
             &window.srctWriteRect);   //! Rectangle defined of the console
 
-    ztui_end_iteration(); //! End the iteration
+    ztg_end_iteration(); //! End the iteration
 
     if (!SetConsoleActiveScreenBuffer(window.handles[3])) { //! Set the current handle buffer as the active console buffer
         exit(EXIT_FAILURE); //! Exit if fail

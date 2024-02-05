@@ -108,12 +108,12 @@ struct ztg_window{
 /*!
  * @fn Indicates the time start of the drawing frame
  */
-void ztui_start_iteration();
+void ztg_start_iteration();
 
 /*!
  * @fn Indicates the time end of the drawing frame
  */
-void ztui_end_iteration();
+void ztg_end_iteration();
 
 /*!
  * @fn Init the console application

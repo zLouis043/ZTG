@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -10,9 +9,7 @@
 
 extern Window window;
 
-#define ztg_mov_to(x, y) \
-        ztg_mov_to_in_buffer_file_line(__FILE__, __LINE__, (x), (y))
-uint8_t ztg_mov_to_in_buffer_file_line(char* filename, size_t line, size_t x, size_t y){
+bool ztg_mov_to(size_t x, size_t y){
     window.curr_x = x - 1;
     window.curr_y = y - 1;
     window.curr_idx = get_index_from_2d(x - 1, y - 1, window.width);
@@ -34,95 +31,99 @@ void ztg_mask_end(){
 }
 
 void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int background_color){
-    ztg_mov_to(x, y);
-    if(window.isMaskOn){
-        switch(window.mask_type) {
-            case INSIDE: {
-                if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
-                    if (!window.enableWrapAround) {
-                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                            window.curr_y < window.height) {
+    if(ztg_mov_to(x, y)) {
+        if (window.isMaskOn) {
+            switch (window.mask_type) {
+                case INSIDE: {
+                    if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
+                        if (!window.enableWrapAround) {
+                            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                                window.curr_y < window.height) {
+                                window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                                window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                            }
+                        } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = c;
                             window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
                         }
-                    } else {
-                        window.buffer[window.curr_idx].Char.UnicodeChar = c;
-                        window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
                     }
-                }break;
-            }
-            case OUTSIDE:{
-                if (x >= window.mask_x1 || x <= window.mask_x2 || y >= window.mask_y1 || y <= window.mask_y2) {
-                    if (!window.enableWrapAround) {
-                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                            window.curr_y < window.height) {
+                    break;
+                }
+                case OUTSIDE: {
+                    if (x >= window.mask_x1 || x <= window.mask_x2 || y >= window.mask_y1 || y <= window.mask_y2) {
+                        if (!window.enableWrapAround) {
+                            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                                window.curr_y < window.height) {
+                                window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                                window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                            }
+                        } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = c;
                             window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
                         }
-                    } else {
-                        window.buffer[window.curr_idx].Char.UnicodeChar = c;
-                        window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
                     }
-                }break;
+                    break;
+                }
             }
-        }
-    }else{
-        if(!window.enableWrapAround) {
-            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                window.curr_y < window.height) {
+        } else {
+            if (!window.enableWrapAround) {
+                if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                    window.curr_y < window.height) {
+                    window.buffer[window.curr_idx].Char.UnicodeChar = c;
+                    window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
+                }
+            } else {
                 window.buffer[window.curr_idx].Char.UnicodeChar = c;
                 window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
             }
-        }else{
-            window.buffer[window.curr_idx].Char.UnicodeChar = c;
-            window.buffer[window.curr_idx].Attributes = 16 * background_color + foreground_color;
         }
     }
 }
 
 void ztg_draw_pixel(size_t x, size_t y, int color){
-    ztg_mov_to(x, y);
-    if(window.isMaskOn){
-        switch(window.mask_type) {
-            case INSIDE: {
-                if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
-                    if (!window.enableWrapAround) {
-                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                            window.curr_y < window.height) {
+    if(ztg_mov_to(x, y)){
+        if(window.isMaskOn){
+            switch(window.mask_type) {
+                case INSIDE: {
+                    if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
+                        if (!window.enableWrapAround) {
+                            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                                window.curr_y < window.height) {
+                                window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                                window.buffer[window.curr_idx].Attributes = color << 4;
+                            }
+                        } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
                             window.buffer[window.curr_idx].Attributes = color << 4;
                         }
-                    } else {
-                        window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                        window.buffer[window.curr_idx].Attributes = color << 4;
-                    }
-                }break;
-            }
-            case OUTSIDE:{
-                if (x >= window.mask_x1 && x <= window.mask_x2 && y >= window.mask_y1 && y <= window.mask_y2) {
-                    if (!window.enableWrapAround) {
-                        if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                            window.curr_y < window.height) {
+                    }break;
+                }
+                case OUTSIDE:{
+                    if (x >= window.mask_x1 && x <= window.mask_x2 && y >= window.mask_y1 && y <= window.mask_y2) {
+                        if (!window.enableWrapAround) {
+                            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                                window.curr_y < window.height) {
+                                window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                                window.buffer[window.curr_idx].Attributes = color << 4;
+                            }
+                        } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
                             window.buffer[window.curr_idx].Attributes = color << 4;
                         }
-                    } else {
-                        window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                        window.buffer[window.curr_idx].Attributes = color << 4;
-                    }
-                }break;
+                    }break;
+                }
             }
-        }
-    }else{
-        if(!window.enableWrapAround) {
-            if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
-                window.curr_y < window.height) {
+        }else{
+            if(!window.enableWrapAround) {
+                if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
+                    window.curr_y < window.height) {
+                    window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
+                    window.buffer[window.curr_idx].Attributes = color << 4;
+                }
+            }else{
                 window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
                 window.buffer[window.curr_idx].Attributes = color << 4;
             }
-        }else{
-            window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-            window.buffer[window.curr_idx].Attributes = color << 4;
         }
     }
 }
@@ -693,7 +694,7 @@ void ztg_draw_thick_ellipse_Vec(iVec2 v1, iVec2 v2, int thickness, int color){
 }
 
 void ztg_clear(int color){
-    ztui_start_iteration();
+    ztg_start_iteration();
     window.background_color = color;
     for(size_t idx = 0; idx < window.width * window.height; idx++){
         window.buffer[idx].Attributes = color << 4;
