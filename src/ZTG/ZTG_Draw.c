@@ -10,9 +10,9 @@
 extern Window window;
 
 bool ztg_mov_to(size_t x, size_t y){
-    window.curr_x = x - 1;
-    window.curr_y = y - 1;
-    window.curr_idx = get_index_from_2d(x - 1, y - 1, window.width);
+    window.curr_x = x;
+    window.curr_y = y;
+    window.curr_idx = get_index_from_2d(x, y , window.width);
 
     return window.curr_idx < window.BUFFER_MAX_IDX;
 }
