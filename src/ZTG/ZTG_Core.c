@@ -102,7 +102,7 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.height = height;
     window.title = title;
     window.coordBufSize = (COORD) {width, height};
-    window.srctWriteRect = (SMALL_RECT){ 0, 0, (short)(width - 1), (short)(height - 1) };
+    window.srctWriteRect = (SMALL_RECT){ 0, 0, (short)(window.width - 1), (short)(window.height - 1) };
     window.bounds = (Rect){
         .p1.x = 0,
         .p1.y = 0,
@@ -184,6 +184,7 @@ extern void HandleInputs();
  * @fn The function that sets the state of the mouse and keys of the keyboard with the inputs given by the user
  */
 void ztg_set_input_state(){
+    ReadConsoleInput(window.handle_in, window.inputRecord, 128, &window.events);
     window.isKeyPressed = false;
     for(int i = 0; i < window.events; i++) {
         switch (window.inputRecord[i].EventType) {
@@ -195,18 +196,17 @@ void ztg_set_input_state(){
             }break;
             case MOUSE_EVENT: {
                 switch (window.inputRecord[i].Event.MouseEvent.dwEventFlags){
+                    case 0:{
+                        for (int m = 0; m < 5; m++){
+                            window.mouse_new_state[m] = (window.inputRecord[i].Event.MouseEvent.dwButtonState & (1 << m)) > 0;
+                        }
+                    }break;
                     case MOUSE_EVENT:{
                         SetConsoleCursorPosition(window.handles[3],window.mousePos);
                     }
                     case MOUSE_MOVED:{
                         window.mousePos.X = window.inputRecord[i].Event.MouseEvent.dwMousePosition.X;
                         window.mousePos.Y = window.inputRecord[i].Event.MouseEvent.dwMousePosition.Y;
-                    }break;
-
-                    case 0:{
-                        for (int m = 0; m < 5; m++)
-                            window.mouse_new_state[m] = (window.inputRecord[i].Event.MouseEvent.dwButtonState & (1 << m)) > 0;
-
                     }break;
                     default: break;
                 }
@@ -224,11 +224,9 @@ void ztg_set_input_state(){
                             window.mButtons[m].released = true;
                             window.mButtons[m].held = false;
                         }
-                    }else{
-                        window.mButtons[m].held = true;
                     }
 
-                    window.mouse_old_state[m] = window.mouse_new_state[m] ;
+                    window.mouse_old_state[m] = window.mouse_new_state[m];
                 }
 
             }break;
@@ -245,7 +243,6 @@ void ztg_set_input_state(){
  * @fn The function that reads the user-inputs, update the mouse and keyboard state and than run the HandleInputs function defined by the programmer
  */
 void ztg_handle_inputs(){
-    ReadConsoleInput(window.handle_in, window.inputRecord, 128, &window.events);
     ztg_set_input_state();
     HandleInputs();
 }

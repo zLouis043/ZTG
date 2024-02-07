@@ -1,6 +1,7 @@
 #ifndef ZTG_ZTG_UTILS_H
 #define ZTG_ZTG_UTILS_H
 
+#include "ZTG_Vectors.h"
 #include "ZTG_Core.h"
 
 extern Window window;
@@ -18,7 +19,7 @@ bool ztg_is_key_pressed_between(KeyCode Key_1, KeyCode Key_2);
 bool ztg_is_mouse_button_pressed(MouseButton mb);
 bool ztg_is_mouse_button_released(MouseButton mb);
 bool ztg_is_mouse_button_hold(MouseButton mb);
-COORD ztg_get_mouse_pos();
+iVec2 ztg_get_mouse_pos();
 void ztg_shut_app();
 void ztg_wrap_around(bool enable);
 int ztg_rand_range(int min, int max);

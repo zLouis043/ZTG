@@ -132,6 +132,9 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
  */
 void ztg_swap_buffer();
 
+
+void ztg_set_input_state();
+
 /*!
  * @fn The function containing the application loop
  */

@@ -53,8 +53,12 @@ bool ztg_is_mouse_button_hold(MouseButton mb){
     return window.mButtons[mb].held;
 }
 
-COORD ztg_get_mouse_pos(){
-    return window.mousePos;
+iVec2 ztg_get_mouse_pos(){
+    iVec2 mousePos = {
+            .x = window.mousePos.X,
+            .y = window.mousePos.Y
+    };
+    return mousePos;
 }
 
 void ztg_shut_app(){

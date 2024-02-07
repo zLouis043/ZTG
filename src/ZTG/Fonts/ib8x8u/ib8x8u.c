@@ -957,7 +957,7 @@ static const unsigned char __font_bitmap__[] = {
 	________,
 //  95 $5f 'underscore'
 //	width 8, bbx 0, bby -1, bbw 8, bbh 1
-	XXXXXXXX,
+
 	________,
 	________,
 	________,
@@ -965,6 +965,7 @@ static const unsigned char __font_bitmap__[] = {
 	________,
 	________,
 	________,
+    XXXXXX__,
 //  96 $60 'grave'
 //	width 8, bbx 2, bby 4, bbw 3, bbh 3
 	__XX____,
