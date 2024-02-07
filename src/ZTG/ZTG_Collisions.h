@@ -16,7 +16,7 @@ typedef struct ztg_circle{
 
 bool ztg_collision_point_inside_rect(Rect rect, iVec2 point);
 bool ztg_collision_circles(Circle c1, Circle c2);
-bool ztg_is_point_in_bounds(iVec2 point, Rect bounds);
+bool ztg_is_point_in_window_bounds(iVec2 point);
 bool ztg_is_circle_in_bounds(Circle c, Rect bounds);
 
 #endif //ZTG_EXAMPLE_ZTG_COLLISIONS_H

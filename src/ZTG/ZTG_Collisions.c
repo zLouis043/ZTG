@@ -15,7 +15,7 @@ bool ztg_collision_circles(Circle c1, Circle c2){
     return ztg_iVec2_distance(c1.center, c2.center) < (float)(c1.radius + c2.radius);
 }
 
-bool ztg_is_point_in_bounds(iVec2 point, Rect bounds){
+bool ztg_is_point_in_window_bounds(iVec2 point){
     return ((float)point.x < (float)ztg_get_console_width() &&
        (float)point.x > 0 &&
        (float)point.y < (float)ztg_get_console_height() &&
