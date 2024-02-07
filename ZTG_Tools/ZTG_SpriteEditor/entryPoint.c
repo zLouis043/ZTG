@@ -363,7 +363,7 @@ static void save(){
 
     char file_name[512];
 
-    make_directory("Sprites");
+    ztg_make_directory("Sprites");
 
     memset(file_name, 0, 256);
     strcat(file_name, "Sprites/");
@@ -570,7 +570,7 @@ static bool is_valid_char(KeyCode kc){
 
 void HandleInputs(){
 
-    if(ztg_is_key_pressed(KEY_ESCAPE) || (ztg_is_key_pressed(KEY_Q) && !g_is_file_name_typing)){
+    if(ztg_is_key_pressed(KEY_ESCAPE) || (ztg_is_key_pressed(KEY_Q) && !g_is_file_name_typing) || window.wants_to_quit){
         g_wants_to_quit = true;
     }
 
@@ -579,8 +579,8 @@ void HandleInputs(){
             g_file_name[g_file_name_cur_idx] = (char)ztg_get_key_pressed();
             g_file_name_cur_idx++;
         }else if(ztg_is_key_pressed(KEY_BACKSPACE) && g_file_name_cur_idx >= 0){
-            g_file_name[g_file_name_cur_idx] = 0;
             g_file_name_cur_idx--;
+            g_file_name[g_file_name_cur_idx] = 0;
         }else if(ztg_is_key_pressed(KEY_RETURN)){
             g_is_file_name_typing = false;
             g_file_name[g_file_name_cur_idx] = 0;

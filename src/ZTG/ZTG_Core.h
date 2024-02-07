@@ -1,3 +1,28 @@
+/*
+ * MIT License
+
+Copyright (c) 2024 zLouis043
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+ */
+
 #ifndef ZTG_ZTG_CORE_H
 #define ZTG_ZTG_CORE_H
 
@@ -13,9 +38,9 @@ Character Set -> Use Unicode.
 
 /*!
  * @struct mouseButtons
- * @param pressed Check if the specified mouse button has been pressed
- * @param released Check if the specified mouse button has been released
- * @param held Check if the specified mouse button is held
+ * @param pressed TYPE : (bool)\n Check if the specified mouse button has been pressed
+ * @param released TYPE : (bool)\n Check if the specified mouse button has been released
+ * @param held TYPE : (bool)\n Check if the specified mouse button is held
  */
 typedef struct ztg_mouseButtons{
     bool pressed;
@@ -102,6 +127,7 @@ struct ztg_window{
 
     bool isRunning;
     bool enableWrapAround;
+    bool wants_to_quit;
 
 };
 
@@ -117,11 +143,11 @@ void ztg_end_iteration();
 
 /*!
  * @fn Init the console application
- * @param title The title of the application
- * @param width The width of the console
- * @param height The height of the console
- * @param resolution_x The width of the character drawn in the console (Used to indicate the pixel density)
- * @param resolution_y The height of the character drawn in the console (Used to indicate the pixel density)
+ * @param title TYPE : (char*)\n The title of the application
+ * @param width TYPE : (short)\n The width of the console
+ * @param height TYPE : (short)\n The height of the console
+ * @param resolution_x TYPE : (short)\n The width of the character drawn in the console (Used to indicate the pixel density)
+ * @param resolution_y TYPE : (short)\n The height of the character drawn in the console (Used to indicate the pixel density)
  */
 #define ztg_init(title, width, height, resolution_x, resolution_y) \
            ztg_init_with_file_and_line(__FILE__, __LINE__, title, width, height, resolution_x, resolution_y)
@@ -132,7 +158,9 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
  */
 void ztg_swap_buffer();
 
-
+/*!
+ * @fn Set the input state for the keyboard and mouse
+ */
 void ztg_set_input_state();
 
 /*!
