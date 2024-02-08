@@ -132,17 +132,22 @@ struct ztg_window{
 };
 
 /*!
- * @fn Indicates the time start of the drawing frame
+ * @brief Start the timer for the elapsed time of each draw iteration
  */
-void ztg_start_iteration();
+ZTGAPI void ztg_start_clock();
 
 /*!
- * @fn Indicates the time end of the drawing frame
+ * @brief Indicates the time start of the drawing frame
  */
-void ztg_end_iteration();
+ZTGAPI void ztg_start_iteration();
 
 /*!
- * @fn Init the console application
+ * @brief Indicates the time end of the drawing frame
+ */
+ZTGAPI void ztg_end_iteration();
+
+/*!
+ * @brief Init the console application
  * @param title TYPE : (char*)\n The title of the application
  * @param width TYPE : (short)\n The width of the console
  * @param height TYPE : (short)\n The height of the console
@@ -151,21 +156,21 @@ void ztg_end_iteration();
  */
 #define ztg_init(title, width, height, resolution_x, resolution_y) \
            ztg_init_with_file_and_line(__FILE__, __LINE__, title, width, height, resolution_x, resolution_y)
-void ztg_init_with_file_and_line(char * filename, size_t line, char * title, short width, short height, short resolution_x, short resolution_y);
+ZTGAPI void ztg_init_with_file_and_line(char * filename, size_t line, char * title, short width, short height, short resolution_x, short resolution_y);
 
 /*!
- * @fn Swap the buffers for every frame
+ * @brief Swap the buffers for every frame
  */
-void ztg_swap_buffer();
+ZTGAPI void ztg_swap_buffer();
 
 /*!
- * @fn Set the input state for the keyboard and mouse
+ * @brief Set the input state for the keyboard and mouse
  */
-void ztg_set_input_state();
+ZTGAPI void ztg_io();
 
 /*!
- * @fn The function containing the application loop
+ * @brief Close the console and set it to its original handle 
  */
-void ztg_run();
+ZTGAPI void ztg_close();
 
 #endif //ZTG_ZTG_CORE_H

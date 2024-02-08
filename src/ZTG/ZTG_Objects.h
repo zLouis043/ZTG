@@ -29,12 +29,12 @@ SOFTWARE.
 #include "ZTG_Collisions.h"
 
 /*!
- * struct Button
+ * @struct Button
  * @brief Contains all the information for a button
- * @param bounds TYPE : (Rect)\n are the rectangular bounds of the button
- * @param color_base TYPE : (int)\n is the base color of the button
- * @param color_hover TYPE : (int)\n is the color of the button when the mouse is hovering it
- * @param color_pressed TYPE : (int)\n is the color of the button when pressed
+ * @param bounds TYPE : (Rect)\n Are the rectangular bounds of the button
+ * @param color_base TYPE : (int)\n Is the base color of the button
+ * @param color_hover TYPE : (int)\n Is the color of the button when the mouse is hovering it
+ * @param color_pressed TYPE : (int)\n Is the color of the button when pressed
  */
 typedef struct ztg_button{
     Rect bounds;
@@ -46,14 +46,14 @@ typedef struct ztg_button{
 extern Window window;
 
 /*!
- * @fn Create a button with a label and checks if the mouse is over it or it has been pressed
+ * @brief Create a button with a label and checks if the mouse is over it or it has been pressed
  * @param b TYPE : (Button)\n Is the Button information
- * @param label TYPE : (char *)\n is the label drawn on top of the button
- * @param padding_x TYPE : (int)\n is the distance between the upper left point x of the button and the label x
- * @param padding_y TYPE : (int)\n is the distance between the upper left point y of the button and the label y
- * @param label_color TYPE : (int)\n is the color of the label
- * @return TYPE : (bool)\n true if the button has been pressed
+ * @param label TYPE : (char *)\n Is the label drawn on top of the button
+ * @param padding_x TYPE : (int)\n Is the distance between the upper left point x of the button and the label x
+ * @param padding_y TYPE : (int)\n Is the distance between the upper left point y of the button and the label y
+ * @param label_color TYPE : (int)\n Is the color of the label
+ * @return TYPE : (bool)\n True if the button has been pressed
  */
-bool ztg_button(Button b, char * label, int padding_x, int padding_y, int label_color);
+ZTGAPI bool ztg_button(Button b, char * label, int padding_x, int padding_y, int label_color);
 
 #endif //ZTG_EXAMPLE_ZTG_OBJECTS_H

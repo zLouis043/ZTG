@@ -39,16 +39,20 @@ SOFTWARE.
 
 Window window;
 
-void ztg_start_iteration(){
+void ztg_start_clock(){
     window.time_point_1 = clock();
     window.time_point_2 = clock();
+}
+
+void ztg_start_iteration(){
+    window.time_point_1 = window.time_point_2;
 }
 
 void ztg_end_iteration(){
     window.time_point_2 = clock();
     window.elapsed_time = ((float)(window.time_point_2 - window.time_point_1) / CLOCKS_PER_SEC) * 1000.0f;
     window.FPS = (int)(1.0f / window.elapsed_time);
-    window.time_point_1 = window.time_point_2;
+
 }
 
 void ztg_init_with_file_and_line(char * filename, size_t line, char * title, short width, short height, short resolution_x, short resolution_y) {
@@ -187,7 +191,7 @@ void ztg_swap_buffer(){
             window.coordBufCoord,    //! Coordinates of the console
             &window.srctWriteRect);   //! Rectangle defined of the console
 
-    ztg_end_iteration(); //! End the iteration
+    //ztg_end_iteration(); //! End the iteration
 
     if (!SetConsoleActiveScreenBuffer(window.handles[3])) { //! Set the current handle buffer as the active console buffer
         exit(EXIT_FAILURE); //! Exit if fail
@@ -197,20 +201,9 @@ void ztg_swap_buffer(){
 }
 
 /*!
- * @fn The Update function where is defined the frame composition. This function is defined by the programmer
- * @param elapsedTime The time passed during the frame composition
+ * @brief The function that sets the state of the mouse and keys of the keyboard with the inputs given by the user
  */
-extern void Update(float elapsedTime);
-
-/*!
- * @fn The function that handles the inputs given by the user. This function is defined by the programmer
- */
-extern void HandleInputs();
-
-/*!
- * @fn The function that sets the state of the mouse and keys of the keyboard with the inputs given by the user
- */
-void ztg_set_input_state(){
+void ztg_io(){
 
     ReadConsoleInput(window.handle_in, window.inputRecord, 128, &window.events);
     window.isKeyPressed = false;
@@ -269,29 +262,8 @@ void ztg_set_input_state(){
 }
 
 /*!
- * @fn The function that reads the user-inputs, update the mouse and keyboard state and than run the HandleInputs function defined by the programmer
+ * @brief Close the console and set it to its original handle 
  */
-void ztg_handle_inputs(){
-    ztg_set_input_state();
-    HandleInputs();
-}
-
-/*!
- * @fn The function wrapper for the Update function
- */
-void ztg_update(){
-    Update(window.elapsed_time);
-}
-
-/*!
- * @fn The function containing the application loop
- */
-void ztg_run(){
-    while (window.isRunning) {
-        ztg_handle_inputs();
-        ztg_clear(color_black);
-        ztg_update();
-        ztg_swap_buffer();
-    }
+void ztg_close(){
     SetConsoleActiveScreenBuffer(window.handles[0]);
 }

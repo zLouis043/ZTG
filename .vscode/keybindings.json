@@ -1,0 +1,16 @@
+{   
+    "keybindings":[
+        {
+            "key": "ctrl+alt+a", 
+            "command": "workbench.action.tasks.runTask", 
+            "args": "BuildAll"},
+        {
+            "key": "ctrl+l", 
+            "command": "workbench.action.tasks.runTask", 
+            "args": "BuildTools"},
+        {
+            "key": "ctrl+m", 
+            "command": "workbench.action.tasks.runTask", 
+            "args": "BuildExamples"}
+    ]
+}

@@ -26,6 +26,11 @@ SOFTWARE.
 #ifndef ZTG_ZTG_DEFINES_H
 #define ZTG_ZTG_DEFINES_H
 
+#include <Windows.h>
+
+#define ZTG_PRIVATE static  
+#define ZTGAPI 
+
 #define UNICODE
 
 #define BUFF_MAX_WIDTH 640
@@ -102,11 +107,12 @@ SOFTWARE.
 #define KEY_INSERT VK_INSERT
 #define KEY_DELETE VK_DELETE
 
-#define KEY_PLUS VK_ADD
-#define KEY_MINUS OEM_MINUS
+#define KEY_PLUS VK_OEM_PLUS
+#define KEY_MINUS VK_OEM_MINUS
 #define KEY_STAR VK_MULTIPLY
 #define KEY_SLASH VK_DIVIDE
 #define KEY_PERIOD VK_OEM_PERIOD
+#define KEY_COMMA VK_OEM_COMMA
 
 #define KEY_F1 VK_F1
 #define KEY_F2 VK_F2

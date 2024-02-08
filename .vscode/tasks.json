@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks":[
+        {
+            "label": "BuildAll",
+            "type": "shell",
+            "command": "./../buildAll.bat",
+            "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+            "group": {"kind": "build", "isDefault": true},
+        },
+        {
+            "label": "BuildTools",
+            "type": "shell",
+            "command": "./../buildTools.bat",
+            "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+            "group": {"kind": "build", "isDefault": false},
+        },
+        {
+            "label": "BuildExamples",
+            "type": "shell",
+            "command": "./../buildExamples.bat",
+            "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+            "group": {"kind": "build", "isDefault": false},
+        }
+    ]
+}

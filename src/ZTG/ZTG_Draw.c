@@ -255,7 +255,7 @@ void ztg_draw_triangle(int x1, int y1, int x2, int y2, int x3, int y3, int color
     ztg_draw_line(x3, y3, x1, y1, color);
 }
 
-static void ztg_swap(int *x, int *y){
+ZTG_PRIVATE void ztg_swap(int *x, int *y){
     int * tmp = x;
     x = y;
     y = x;
@@ -719,7 +719,7 @@ void ztg_draw_thick_ellipse_Vec(iVec2 v1, iVec2 v2, int thickness, int color){
 }
 
 void ztg_clear(int color){
-    ztg_start_iteration();
+
     window.background_color = color;
     for(size_t idx = 0; idx < window.width * window.height; idx++){
         window.buffer[idx].Attributes = color << 4;

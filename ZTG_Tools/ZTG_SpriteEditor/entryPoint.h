@@ -6,4 +6,7 @@
 extern char ** save_file_name;
 extern char ** load_file_name;
 
+void Update(float elapsedTime);
+void HandleInputs();
+
 #endif //ZTG_SPRITEEDITOR_ENTRYPOINT_H
