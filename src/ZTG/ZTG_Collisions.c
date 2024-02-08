@@ -29,6 +29,10 @@ SOFTWARE.
 #include "ZTG_Collisions.h"
 #include "ZTG_Utils.h"
 
+bool ztg_collision_circles(Circle c1, Circle c2){
+    return ztg_iVec2_distance(c1.center, c2.center) < (float)(c1.radius + c2.radius);
+}
+
 bool ztg_collision_point_inside_rect(Rect rect, iVec2 point){
     return (point.x < rect.p2.x &&
             point.x > rect.p1.x &&
@@ -36,20 +40,17 @@ bool ztg_collision_point_inside_rect(Rect rect, iVec2 point){
             point.y > rect.p1.y);
 }
 
-bool ztg_collision_circles(Circle c1, Circle c2){
-    return ztg_iVec2_distance(c1.center, c2.center) < (float)(c1.radius + c2.radius);
+bool ztg_collision_circle_inside_rect(Rect rect, Circle c){
+    return (c.center.x + c.radius < rect.p2.x &&
+            c.center.x - c.radius > rect.p1.x &&
+            c.center.y + c.radius < rect.p2.y &&
+            c.center.y - c.radius > rect.p1.y);
 }
 
 bool ztg_is_point_in_window_bounds(iVec2 point){
-    return ((float)point.x < (float)ztg_get_console_width() &&
-       (float)point.x > 0 &&
-       (float)point.y < (float)ztg_get_console_height() &&
-       (float)point.y  > 0);
+    return ztg_collision_point_inside_rect(ztg_get_console_bounds(), point);
 }
 
-bool ztg_is_circle_in_bounds(Circle c, Rect bounds){
-    return ((float)c.center.x + c.radius < (float)ztg_get_console_width() &&
-    (float)c.center.x - c.radius > 0 &&
-    (float)c.center.y + c.radius < (float)ztg_get_console_height() &&
-    (float)c.center.y - c.radius > 0);
+bool ztg_is_circle_in_window_bounds(Circle c){
+    return ztg_collision_circle_inside_rect(ztg_get_console_bounds(), c);
 }

@@ -110,7 +110,7 @@ static void draw_commands(){
 }
 
 static void check_if_lost() {
-    if(!ztg_is_circle_in_bounds(player.bounds.as_circle, ztg_get_console_bounds())){
+    if(!ztg_is_circle_in_window_bounds(player.bounds.as_circle)){
         player_stats.curr_level = DEAD;
         gen_new_point = true;
         player.bounds.as_circle.center.x = 100;

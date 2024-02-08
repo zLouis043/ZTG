@@ -71,25 +71,6 @@ fVec2 ztg_iVec2_normalized(iVec2 v){
     };
 }
 
-
-iVec2 ztg_iVec2_proj_v1_on_v2(iVec2 v1, iVec2 v2){
-
-    if(ztg_iVec2_are_orthogonal(v1, v2)){
-        return (iVec2){
-            .x = 0,
-            .y = 0
-        };
-    }
-
-    float scalar_proj = ztg_iVec2_scalar_proj_v1_on_v2(v1, v2);
-
-    return (iVec2){
-        .x = v2.x * (int)scalar_proj,
-        .y = v2.y * (int)scalar_proj
-    };
-
-}
-
 bool ztg_iVec2_are_equal(iVec2 v1, iVec2 v2){
     return (v1.x == v2.x && v1.y == v2.y);
 }

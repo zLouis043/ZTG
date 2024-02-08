@@ -52,14 +52,6 @@ typedef struct ztg_circle{
 }Circle;
 
 /*!
- * @brief Check if a point is inside of a rectangle
- * @param rect TYPE : (Rect)\n
- * @param point TYPE : (iVec2)\n
- * @return TYPE : (bool)\n True if the point is inside and false if not
- */
-ZTGAPI bool ztg_collision_point_inside_rect(Rect rect, iVec2 point);
-
-/*!
  * @brief Check if two circles collide with each other
  * @param c1 TYPE : (Circle)\n
  * @param c2 TYPE : (Circle)\n
@@ -68,18 +60,35 @@ ZTGAPI bool ztg_collision_point_inside_rect(Rect rect, iVec2 point);
 ZTGAPI bool ztg_collision_circles(Circle c1, Circle c2);
 
 /*!
+ * @brief Check if a point is inside of a rectangle
+ * @param rect TYPE : (Rect)\n
+ * @param point TYPE : (iVec2)\n
+ * @return TYPE : (bool)\n True if the point is inside and false if not
+ */
+ZTGAPI bool ztg_collision_point_inside_rect(Rect rect, iVec2 point);
+
+/*!
+ * @brief Check if a circle is inside Rectangular Bounds
+ * @param rect TYPE : (Rect)\n
+ * @param c TYPE : (Circle)\n
+ * @return TYPE : (bool)\n True if the circle is inside and false if not
+ */
+ZTGAPI bool ztg_collision_circle_inside_rect(Rect rect, Circle c);
+
+/*!
  * @brief Check if a point is inside the Console Window bounds
  * @param point TYPE : (iVec2)\n
  * @return TYPE : (bool)\n True if the point is inside and false if not
  */
 ZTGAPI bool ztg_is_point_in_window_bounds(iVec2 point);
 
+
 /*!
- * @brief Check if a circle is inside Rectangular Bounds
+ * @brief Check if a circle is inside the Console Window bounds
  * @param c TYPE : (Circle)\n
- * @param bounds TYPE : (Rect)\n
- * @return TYPE : (bool)\n True if the circle is inside and false if not
+ * @return TYPE : (bool)\n True if the point is inside and false if not
  */
-ZTGAPI bool ztg_is_circle_in_bounds(Circle c, Rect bounds);
+ZTGAPI bool ztg_is_circle_in_window_bounds(Circle c);
+
 
 #endif //ZTG_EXAMPLE_ZTG_COLLISIONS_H
