@@ -278,10 +278,6 @@ static void level_main_menu(){
     draw_commands();
 }
 
-/*!
- * @attention Function Needed for the engine to work properly
- * @brief Handles the user inputs
- */
 void HandleInputs(){
 
     if(ztg_is_key_pressed_between(KEY_W, KEY_UP))player_stats.dir = UP;
@@ -307,10 +303,6 @@ void HandleInputs(){
     }
 }
 
-/*!
- * @attention Function Needed for the engine to work properly
- * @brief Updates the frame buffer to render
- */
 void Update(float elapsedTime) {
     if(player_stats.curr_level == DEAD){
         level_lost();

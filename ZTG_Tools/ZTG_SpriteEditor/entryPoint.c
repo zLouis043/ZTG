@@ -101,7 +101,7 @@ static bool draw_cell(int x1, int y1, int width, int height, int color){
     Button cell_b = {
             .bounds = cell_r,
             .color_base = color,
-            .color_hover = color,
+            .color_hover = C_GRAY,
             .color_pressed = color
     };
 
@@ -124,7 +124,7 @@ static void grid_init(int cell_width, int cell_height){
                 g_grid.cells[idx].curr_color = g_cell_states[idx].curr_color;
                 g_grid.cells[idx].is_empty = g_cell_states[idx].is_empty;
             }else {
-                g_grid.cells[idx].default_color = (i + j) % 2 == 0 ? C_BLACK  : C_GRAY;
+                g_grid.cells[idx].default_color = (i + j) % 2 == 0 ? C_BLACK  : C_DARK_GRAY;
                 g_grid.cells[idx].curr_color = g_grid.cells[idx].default_color;
                 g_grid.cells[idx].is_empty = true;
             }
@@ -133,13 +133,13 @@ static void grid_init(int cell_width, int cell_height){
     g_is_size_updated = false;
 }
 
-int g_flood_fill_iteration_numberation = 0;
+int g_flood_fill_iteration = 0;
 int g_flood_fill_limit = 300;
 
 static void fill_color(int x, int y, int new_color, int old_color){
 
-    if(g_flood_fill_iteration_numberation > g_flood_fill_limit) return;
-    g_flood_fill_iteration_numberation++;
+    if(g_flood_fill_iteration > g_flood_fill_limit) return;
+    g_flood_fill_iteration++;
 
     if(x >= g_grid.cells_count_x ||
      x < 0 ||
@@ -187,7 +187,7 @@ static void grid_draw(){
                       g_grid.cells[idx].curr_color)){
                 g_has_changes = true;
                 if(g_fill_mode){
-                    g_flood_fill_iteration_numberation = 0;
+                    g_flood_fill_iteration = 0;
                     g_flood_fill_limit = g_fill_mode ? 600 : 300;
                     fill_color(j, i, g_mouse_color, g_grid.cells[idx].curr_color);
                 }else{
@@ -211,7 +211,7 @@ static void erase_mode_button(){
 
     Button erase_b = {
             .bounds = erase_r,
-            .color_base = C_GRAY,
+            .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
             .color_pressed = C_BLUE
     };
@@ -234,7 +234,7 @@ static bool reset_button(){
 
     Button reset_b = {
             .bounds = reset_r,
-            .color_base = C_GRAY,
+            .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
             .color_pressed = C_BLUE
     };
@@ -255,7 +255,7 @@ static bool fill_mode_button(){
 
     Button fill_b = {
             .bounds = fill_r,
-            .color_base = C_GRAY,
+            .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
             .color_pressed = C_BLUE
     };
@@ -278,7 +278,7 @@ static bool paint_mode_button(){
 
     Button paint_b = {
             .bounds = paint_r,
-            .color_base = C_GRAY,
+            .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
             .color_pressed = C_BLUE
     };
@@ -302,7 +302,7 @@ static bool change_canvas_size_button(){
     Button canvas_size_b = {
             .bounds = canvas_size_r,
             .color_base = C_BLACK ,
-            .color_hover = C_GRAY,
+            .color_hover = C_DARK_GRAY,
             .color_pressed = C_BLUE
     };
 
@@ -348,7 +348,7 @@ static bool save_button(){
     Button save_b = {
             .bounds = save_r,
             .color_base = C_BLACK ,
-            .color_hover = C_GRAY,
+            .color_hover = C_DARK_GRAY,
             .color_pressed = C_BLUE
     };
 

@@ -23,8 +23,8 @@ SOFTWARE.
 
  */
 
-#ifndef ZTG_ZTG_UTILS_H
-#define ZTG_ZTG_UTILS_H
+#ifndef ZTG_UTILS_H
+#define ZTG_UTILS_H
 
 #include "ZTG_Defines.h"
 #include "ZTG_Vectors.h"
@@ -48,6 +48,12 @@ ZTGAPI int ztg_get_console_height();
  * @param enable TYPE : (bool)\n Set the wrap around on or off\n (Default value of wrap around is false)
  */
 ZTGAPI void ztg_wrap_around(bool enable);
+
+/*!
+ * @brief Set the style of the app to have a old pixel look 
+ * @param enable TYPE : (bool)\n Set the old pixel look on or off\n (Default value old pixel look is false)
+ */
+ZTGAPI void ztg_old_pixel_look(bool enable);
 
 /*!
  * @brief Get the Console Rectangular Bounds
@@ -152,4 +158,4 @@ ZTGAPI int ztg_rand_range(int min, int max);
  */
 ZTGAPI void ztg_make_directory(const char* name);
 
-#endif //ZTG_ZTG_UTILS_H
+#endif //ZTG_UTILS_H

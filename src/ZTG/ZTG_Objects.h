@@ -23,8 +23,8 @@ SOFTWARE.
 
  */
 
-#ifndef ZTG_EXAMPLE_ZTG_OBJECTS_H
-#define ZTG_EXAMPLE_ZTG_OBJECTS_H
+#ifndef ZTG_OBJECTS_H
+#define ZTG_OBJECTS_H
 
 #include "ZTG_Collisions.h"
 
@@ -56,4 +56,4 @@ extern Window window;
  */
 ZTGAPI bool ztg_button(Button b, char * label, int padding_x, int padding_y, int label_color);
 
-#endif //ZTG_EXAMPLE_ZTG_OBJECTS_H
+#endif //ZTG_OBJECTS_H

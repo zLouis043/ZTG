@@ -23,8 +23,8 @@ SOFTWARE.
 
  */
 
-#ifndef ZTG_ZTG_DRAW_H
-#define ZTG_ZTG_DRAW_H
+#ifndef ZTG_DRAW_H
+#define ZTG_DRAW_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -81,4 +81,4 @@ ZTGAPI void ztg_draw_thick_ellipse_Vec(iVec2 v1, iVec2 v2, int thickness, int co
 
 ZTGAPI void ztg_clear(int color);
 ZTGAPI void ztg_show_fps(int x, int y, int color);
-#endif //ZTG_ZTG_DRAW_H
+#endif //ZTG_DRAW_H

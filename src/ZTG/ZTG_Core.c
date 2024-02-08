@@ -72,6 +72,7 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.buffer_switch = true;
     window.is_mask_enabled = false;
     window.is_wrap_around_enabled = false;
+    window.is_pixel_look_enabled = false;
     window.BUFFER_MAX_IDX = width * height - 1;
     window.wants_to_quit = false;
 

@@ -36,7 +36,42 @@ SOFTWARE.
 #define BUFF_MAX_WIDTH 640
 #define BUFF_MAX_HEIGHT 340
 
-#define C_BLACK       0
+/*
+    FG_BLACK		= 0x0000,
+	FG_DARK_BLUE    = 0x0001,	
+	FG_DARK_GREEN   = 0x0002,
+	FG_DARK_CYAN    = 0x0003,
+	FG_DARK_RED     = 0x0004,
+	FG_DARK_MAGENTA = 0x0005,
+	FG_DARK_YELLOW  = 0x0006,
+	FG_GREY			= 0x0007, // Thanks MS :-/
+	FG_DARK_GREY    = 0x0008,
+	FG_BLUE			= 0x0009,
+	FG_GREEN		= 0x000A,
+	FG_CYAN			= 0x000B,
+	FG_RED			= 0x000C,
+	FG_MAGENTA		= 0x000D,
+	FG_YELLOW		= 0x000E,
+	FG_WHITE		= 0x000F,
+	BG_BLACK		= 0x0000,
+	BG_DARK_BLUE	= 0x0010,
+	BG_DARK_GREEN	= 0x0020,
+	BG_DARK_CYAN	= 0x0030,
+	BG_DARK_RED		= 0x0040,
+	BG_DARK_MAGENTA = 0x0050,
+	BG_DARK_YELLOW	= 0x0060,
+	BG_GREY			= 0x0070,
+	BG_DARK_GREY	= 0x0080,
+	BG_BLUE			= 0x0090,
+	BG_GREEN		= 0x00A0,
+	BG_CYAN			= 0x00B0,
+	BG_RED			= 0x00C0,
+	BG_MAGENTA		= 0x00D0,
+	BG_YELLOW		= 0x00E0,
+	BG_WHITE		= 0x00F0,
+*/
+/*
+#define C_BLACK      0
 #define C_DARK_BLUE  1
 #define C_DARK_GREEN 2
 #define C_LIGHT_BLUE 3
@@ -52,6 +87,24 @@ SOFTWARE.
 #define C_PINK      13
 #define C_YELLOW    14
 #define C_WHITE     15
+*/
+
+#define C_BLACK		    0x0000
+#define C_DARK_BLUE     0x0001	
+#define C_DARK_GREEN    0x0002
+#define C_DARK_CYAN     0x0003
+#define C_DARK_RED      0x0004
+#define C_DARK_MAGENTA  0x0005
+#define C_DARK_YELLOW   0x0006
+#define C_GRAY			0x0007
+#define C_DARK_GRAY     0x0008
+#define C_BLUE			0x0009
+#define C_GREEN		    0x000A
+#define C_CYAN			0x000B
+#define C_RED			0x000C
+#define C_MAGENTA		0x000D
+#define C_YELLOW		0x000E
+#define C_WHITE		    0x000F
 
 #define KEY_0 '0'
 #define KEY_1 '1'

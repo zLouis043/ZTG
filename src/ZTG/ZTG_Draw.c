@@ -114,12 +114,12 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                         if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
-                                window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                                window.buffer[window.curr_idx].Attributes = color << 4;
+                                window.buffer[window.curr_idx].Char.UnicodeChar = window.is_pixel_look_enabled ? 0x2588 : ' ';
+                                window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
                             }
                         } else {
-                            window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                            window.buffer[window.curr_idx].Attributes = color << 4;
+                            window.buffer[window.curr_idx].Char.UnicodeChar = window.is_pixel_look_enabled ? 0x2588 : ' ';
+                            window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
                         }
                     }break;
                 }
@@ -128,12 +128,12 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                         if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
-                                window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                                window.buffer[window.curr_idx].Attributes = color << 4;
+                                window.buffer[window.curr_idx].Char.UnicodeChar = window.is_pixel_look_enabled ? 0x2588 : ' ';
+                                window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
                             }
                         } else {
-                            window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                            window.buffer[window.curr_idx].Attributes = color << 4;
+                            window.buffer[window.curr_idx].Char.UnicodeChar = window.is_pixel_look_enabled ? 0x2588 : ' ';
+                            window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
                         }
                     }break;
                 }
@@ -142,12 +142,12 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
             if(!window.is_wrap_around_enabled) {
                 if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                     window.curr_y < window.height) {
-                    window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                    window.buffer[window.curr_idx].Attributes = color << 4;
+                    window.buffer[window.curr_idx].Char.UnicodeChar = window.is_pixel_look_enabled ? 0x2588 : ' ';
+                    window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
                 }
             }else{
-                window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
-                window.buffer[window.curr_idx].Attributes = color << 4;
+                window.buffer[window.curr_idx].Char.UnicodeChar = window.is_pixel_look_enabled ? 0x2588 : ' ';
+                window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);;
             }
         }
     }

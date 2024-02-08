@@ -61,6 +61,13 @@ iVec2 ztg_iVec2_div(iVec2 v1, iVec2 v2){
     };
 }
 
+iVec2 ztg_iVec2_orthogonal(iVec2 v){
+    return (iVec2){
+        .x = -v.y,
+        .y = v.x
+    };
+}
+
 fVec2 ztg_iVec2_normalized(iVec2 v){
 
     float mag = ztg_iVec2_magnitude(v);
@@ -128,6 +135,13 @@ fVec2 ztg_fVec2_div(fVec2 v1, fVec2 v2){
     return (fVec2){
             .x = v1.x + v2.x,
             .y = v1.y + v2.y
+    };
+}
+
+fVec2 ztg_fVec2_orthogonal(fVec2 v){
+    return (fVec2){
+        .x = -v.y,
+        .y = v.x
     };
 }
 

@@ -99,6 +99,10 @@ void ztg_wrap_around(bool enable){
     window.is_wrap_around_enabled = enable;
 }
 
+void ztg_old_pixel_look(bool enable){
+    window.is_pixel_look_enabled = enable;
+}
+
 #if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
 #include <unistd.h>
 #elif _WIN32

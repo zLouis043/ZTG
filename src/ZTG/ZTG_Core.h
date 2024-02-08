@@ -23,8 +23,8 @@ SOFTWARE.
 
  */
 
-#ifndef ZTG_ZTG_CORE_H
-#define ZTG_ZTG_CORE_H
+#ifndef ZTG_CORE_H
+#define ZTG_CORE_H
 
 #include <Windows.h>
 #include <stdbool.h>
@@ -127,6 +127,7 @@ struct ztg_window{
 
     bool is_running;
     bool is_wrap_around_enabled;
+    bool is_pixel_look_enabled;
     bool wants_to_quit;
 
 };
@@ -173,4 +174,4 @@ ZTGAPI void ztg_io();
  */
 ZTGAPI void ztg_close();
 
-#endif //ZTG_ZTG_CORE_H
+#endif //ZTG_CORE_H

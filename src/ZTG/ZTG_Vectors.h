@@ -23,8 +23,8 @@ SOFTWARE.
 
  */
 
-#ifndef ZTUI_ZTG_VECTORS_H
-#define ZTUI_ZTG_VECTORS_H
+#ifndef ZTG_VECTORS_H
+#define ZTG_VECTORS_H
 
 #include "ZTG_Defines.h"
 
@@ -149,6 +149,13 @@ ZTGAPI iVec2 ztg_iVec2_mul(iVec2 v1, iVec2 v2);
 ZTGAPI iVec2 ztg_iVec2_div(iVec2 v1, iVec2 v2);
 
 /*!
+ * @brief Get the orthogonal vector of the given vector
+ * @param v TYPE : (iVec2) \n
+ * @param TYPE : (iVec2) \n The orthogonal vector
+ */
+ZTGAPI iVec2 ztg_iVec2_orthogonal(iVec2 v);
+
+/*!
  * @brief Get the normalized version of the vector
  * @param v TYPE : (iVec2) \n The vector to normalize
  * @param TYPE : (fVec2) \n The normalized vector
@@ -243,6 +250,13 @@ ZTGAPI fVec2 ztg_fVec2_mul(fVec2 v1, fVec2 v2);
 ZTGAPI fVec2 ztg_fVec2_div(fVec2 v1, fVec2 v2);
 
 /*!
+ * @brief Get the orthogonal vector of the given vector
+ * @param v TYPE : (fVec2) \n
+ * @param TYPE : (fVec2) \n The orthogonal vector
+ */
+ZTGAPI fVec2 ztg_fVec2_orthogonal(fVec2 v);
+
+/*!
  * @brief Get the normalized version of the vector
  * @param v TYPE : (fVec2) \n The vector to normalize
  * @param TYPE : (fVec2) \n The normalized vector
@@ -310,4 +324,4 @@ ZTGAPI float ztg_fVec2_distance(fVec2 v1, fVec2 v2);
  */
 ZTGAPI float ztg_fVec2_scalar_proj_v1_on_v2(fVec2 v1, fVec2 v2);
 
-#endif //ZTUI_ZTG_VECTORS_H
+#endif //ZTG_VECTORS_H

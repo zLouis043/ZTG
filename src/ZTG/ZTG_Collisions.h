@@ -23,8 +23,8 @@ SOFTWARE.
 
  */
 
-#ifndef ZTG_EXAMPLE_ZTG_COLLISIONS_H
-#define ZTG_EXAMPLE_ZTG_COLLISIONS_H
+#ifndef ZTG_COLLISIONS_H
+#define ZTG_COLLISIONS_H
 
 #include "ZTG_Defines.h"
 #include "ZTG_Vectors.h"
@@ -91,4 +91,4 @@ ZTGAPI bool ztg_is_point_in_window_bounds(iVec2 point);
 ZTGAPI bool ztg_is_circle_in_window_bounds(Circle c);
 
 
-#endif //ZTG_EXAMPLE_ZTG_COLLISIONS_H
+#endif //ZTG_COLLISIONS_H
