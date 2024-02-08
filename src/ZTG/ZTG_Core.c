@@ -67,11 +67,11 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
 
     char *locale;
     locale = setlocale(LC_ALL, "");
-    window.isRunning = true;
-    window.iter = 0;
+    window.is_running = true;
+    window.iteration_number = 0;
     window.buffer_switch = true;
-    window.isMaskOn = false;
-    window.enableWrapAround = false;
+    window.is_mask_enabled = false;
+    window.is_wrap_around_enabled = false;
     window.BUFFER_MAX_IDX = width * height - 1;
     window.wants_to_quit = false;
 
@@ -132,8 +132,8 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.width = width;
     window.height = height;
     window.title = title;
-    window.coordBufSize = (COORD) {width, height};
-    window.srctWriteRect = (SMALL_RECT){ 0, 0, (short)(window.width - 1), (short)(window.height - 1) };
+    window.buff_size_ad_coord = (COORD) {width, height};
+    window.console_write_rect = (SMALL_RECT){ 0, 0, (short)(window.width - 1), (short)(window.height - 1) };
     window.bounds = (Rect){
         .p1.x = 0,
         .p1.y = 0,
@@ -158,12 +158,12 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
      */
     SetConsoleTitle(window.title);
     SetConsoleMode(window.handles[1], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
-    SetConsoleScreenBufferSize(window.handles[1], window.coordBufSize);
-    SetConsoleWindowInfo(window.handles[1], TRUE, &window.srctWriteRect);
+    SetConsoleScreenBufferSize(window.handles[1], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles[1], TRUE, &window.console_write_rect);
     SetCurrentConsoleFontEx(window.handles[1],false, &cfi);
     SetConsoleMode(window.handles[1], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
-    SetConsoleScreenBufferSize(window.handles[2], window.coordBufSize);
-    SetConsoleWindowInfo(window.handles[2], TRUE, &window.srctWriteRect);
+    SetConsoleScreenBufferSize(window.handles[2], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles[2], TRUE, &window.console_write_rect);
     SetCurrentConsoleFontEx(window.handles[2],false, &cfi);
     SetConsoleMode(window.handles[2], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
 
@@ -187,17 +187,15 @@ void ztg_swap_buffer(){
     WriteConsoleOutput(
             window.handles[3], //! Current handle buffer
             window.buffer,        //! Buffer drawn
-            window.coordBufSize,     //! Size of the console
-            window.coordBufCoord,    //! Coordinates of the console
-            &window.srctWriteRect);   //! Rectangle defined of the console
-
-    //ztg_end_iteration(); //! End the iteration
+            window.buff_size_ad_coord,     //! Size of the console
+            window.window_coord_as_coord,    //! Coordinates of the console
+            &window.console_write_rect);   //! Rectangle defined of the console
 
     if (!SetConsoleActiveScreenBuffer(window.handles[3])) { //! Set the current handle buffer as the active console buffer
         exit(EXIT_FAILURE); //! Exit if fail
     }
 
-    window.iter++; //! Increment the iteration
+    window.iteration_number++; //! Increment the iteration_number
 }
 
 /*!
@@ -205,31 +203,31 @@ void ztg_swap_buffer(){
  */
 void ztg_io(){
 
-    ReadConsoleInput(window.handle_in, window.inputRecord, 128, &window.events);
-    window.isKeyPressed = false;
+    ReadConsoleInput(window.handle_in, window.input_record, 128, &window.events);
+    window.is_key_pressed = false;
     for(int i = 0; i < window.events; i++) {
-        switch (window.inputRecord[i].EventType) {
+        switch (window.input_record[i].EventType) {
             case KEY_EVENT: {
-                window.isKeyPressed = window.inputRecord[i].Event.KeyEvent.bKeyDown;
-                if(window.keyButtonPressed != window.inputRecord[i].Event.KeyEvent.wVirtualKeyCode) {
-                    window.keyButtonPressed = window.inputRecord[i].Event.KeyEvent.wVirtualKeyCode;
+                window.is_key_pressed = window.input_record[i].Event.KeyEvent.bKeyDown;
+                if(window.key_button_pressed != window.input_record[i].Event.KeyEvent.wVirtualKeyCode) {
+                    window.key_button_pressed = window.input_record[i].Event.KeyEvent.wVirtualKeyCode;
                 }
             }break;
             case MOUSE_EVENT: {
-                switch (window.inputRecord[i].Event.MouseEvent.dwEventFlags){
+                switch (window.input_record[i].Event.MouseEvent.dwEventFlags){
                     case 0:{
                         for (int m = 0; m < 5; m++){
-                            window.mouse_new_state[m] = (window.inputRecord[i].Event.MouseEvent.dwButtonState & (1 << m)) > 0;
+                            window.mouse_new_state[m] = (window.input_record[i].Event.MouseEvent.dwButtonState & (1 << m)) > 0;
                         }
                     }break;
                     case MOUSE_EVENT:{
-                        SetConsoleCursorPosition(window.handles[3],window.mousePos);
+                        SetConsoleCursorPosition(window.handles[3],window.mouse_pos);
                     }
                     case MOUSE_MOVED:{
-                        window.mousePos.X = window.inputRecord[i].Event.MouseEvent.dwMousePosition.X;
-                        window.mousePos.Y = window.inputRecord[i].Event.MouseEvent.dwMousePosition.Y;
-                    }break;
+                        window.mouse_pos.X = window.input_record[i].Event.MouseEvent.dwMousePosition.X;
+                        window.mouse_pos.Y = window.input_record[i].Event.MouseEvent.dwMousePosition.Y;
                     default: break;
+                    }
                 }
 
                 for (int m = 0; m < 5; m++){
@@ -252,8 +250,8 @@ void ztg_io(){
 
             }break;
             case WINDOW_BUFFER_SIZE_EVENT:
-                SetConsoleScreenBufferSize(window.handles[3], window.coordBufSize);
-                SetConsoleWindowInfo(window.handles[3], TRUE, &window.srctWriteRect);
+                SetConsoleScreenBufferSize(window.handles[3], window.buff_size_ad_coord);
+                SetConsoleWindowInfo(window.handles[3], TRUE, &window.console_write_rect);
                 break;
 
         }

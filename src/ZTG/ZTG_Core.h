@@ -64,26 +64,26 @@ typedef struct ztg_window Window;
  * @param curr_y The current y position of the pixel drawn
  * @param curr_idx The current index of the window write buffer
  * @param handles The handles used in the double buffering. The first is the STD_OUTPUT, the second and third are the alternating handles and the fourth is used to flush the output of the frame drawn
- * @param coordBufSize The size of the window in COORDS
- * @param coordBufCoord The coordinates of the window
- * @param srctWriteRect The buffer rectangle of the console
- * @param inputRecord The record of every inputs given by the user
+ * @param buff_size_ad_coord The size of the window in COORDS
+ * @param window_coord_as_coord The coordinates of the window
+ * @param console_write_rect The buffer rectangle of the console
+ * @param input_record The record of every inputs given by the user
  * @param events The number of inputs given
  * @param buffer_switch The bool used to check which is the current handle buffer to flush
- * @param isKeyPressed The bool that indicates whether a keyboard key has been pressed
- * @param keyButtonPressed The key pressed
+ * @param is_key_pressed The bool that indicates whether a keyboard key has been pressed
+ * @param key_button_pressed The key pressed
  * @param mouse_old_state The old state of every mouse button
  * @param mouse_new_state The actual state of every mouse button
  * @param mButtons The buttons of the mouse and each state they are
- * @param mousePos The position of the mouse
+ * @param mouse_pos The position of the mouse
  * @param time_point_1 The time when the frame is drawn
  * @param time_point_2 The time when the frame draw ended
  * @param elapsed_time The time passed to draw the frame
- * @param iter The current frame number drawn
+ * @param iteration_number The current frame number drawn
  * @param FPS The FPS of the application
  * @param BUFFER_MAX_SIZE The buffer console max size
  * @param BUFFER_MAX_IDX THe buffer index max size
- * @param isRunning The bool that indicates if the application is running
+ * @param is_running The bool that indicates if the application is running
  */
 struct ztg_window{
     const char * title;
@@ -96,37 +96,37 @@ struct ztg_window{
     size_t curr_idx;
     HANDLE handles[4];
     HANDLE handle_in;
-    COORD coordBufSize;
+    COORD buff_size_ad_coord;
     Rect bounds;
 
-    COORD coordBufCoord;
-    SMALL_RECT srctWriteRect;
-    INPUT_RECORD inputRecord[128];
+    COORD window_coord_as_coord;
+    SMALL_RECT console_write_rect;
+    INPUT_RECORD input_record[128];
     DWORD events;
     bool buffer_switch;
 
-    bool isKeyPressed;
-    WORD keyButtonPressed;
+    bool is_key_pressed;
+    WORD key_button_pressed;
     bool mouse_old_state[5];
     bool mouse_new_state[5];
     mouseButtons mButtons[5];
-    COORD mousePos;
+    COORD mouse_pos;
 
     int time_point_1;
     int time_point_2;
     float elapsed_time;
-    int iter;
+    int iteration_number;
 
     int FPS;
     size_t BUFFER_MAX_IDX;
 
     int background_color;
-    bool isMaskOn;
+    bool is_mask_enabled;
     maskType mask_type;
-    size_t mask_x1, mask_y1, mask_x2, mask_y2;
+    Rect mask_bounds;
 
-    bool isRunning;
-    bool enableWrapAround;
+    bool is_running;
+    bool is_wrap_around_enabled;
     bool wants_to_quit;
 
 };

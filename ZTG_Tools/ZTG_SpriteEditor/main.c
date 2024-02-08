@@ -19,7 +19,7 @@ void run(){
         HandleInputs();
 
         /*Clear the background*/
-        ztg_clear(color_black);
+        ztg_clear(C_BLACK );
         /*Update the frame passing the elapsed time*/
         Update(ztg_get_elapsed_time());
         /*Swap the console buffers*/

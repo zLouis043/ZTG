@@ -43,23 +43,23 @@ float ztg_get_elapsed_time(){
 }
 
 int ztg_get_frame_count(){
-    return window.iter;
+    return window.iteration_number;
 }
 
 bool ztg_is_key_pressed(KeyCode Key){
-    return (window.isKeyPressed && window.keyButtonPressed == Key);
+    return (window.is_key_pressed && window.key_button_pressed == Key);
 }
 
 KeyCode ztg_get_key_pressed(){
-    return window.keyButtonPressed;
+    return window.key_button_pressed;
 }
 
 bool ztg_is_keyboard_pressed(){
-    return (window.isKeyPressed);
+    return (window.is_key_pressed);
 }
 
 bool ztg_is_keyboard_pressed_except(KeyCode Key){
-    return (window.isKeyPressed && window.keyButtonPressed != Key);
+    return (window.is_key_pressed && window.key_button_pressed != Key);
 }
 
 bool ztg_is_key_pressed_between(KeyCode Key_1, KeyCode Key_2){
@@ -79,24 +79,24 @@ bool ztg_is_mouse_button_hold(MouseButton mb){
 }
 
 iVec2 ztg_get_mouse_pos(){
-    iVec2 mousePos = {
-            .x = window.mousePos.X,
-            .y = window.mousePos.Y
+    iVec2 mouse_pos = {
+            .x = window.mouse_pos.X,
+            .y = window.mouse_pos.Y
     };
-    return mousePos;
+    return mouse_pos;
 }
 
 void ztg_shut_app(){
-    window.isRunning = false;
+    window.is_running = false;
     SetConsoleActiveScreenBuffer(window.handles[0]);
 }
 
 bool ztg_is_app_running(){
-    return window.isRunning;
+    return window.is_running;
 }
 
 void ztg_wrap_around(bool enable){
-    window.enableWrapAround = enable;
+    window.is_wrap_around_enabled = enable;
 }
 
 #if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))

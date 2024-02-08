@@ -48,13 +48,13 @@ Object player = {
         .bounds.as_circle.radius = 5.0f,
         .bounds_t = CIRCLE,
         .speed = 0.2f,
-        .color = color_red
+        .color = C_RED
 };
 
 Object point = {
         .bounds.as_circle.radius = 3.0f,
         .bounds_t = CIRCLE,
-        .color = color_green
+        .color = C_GREEN
 };
 
 Rect continue_rect = {
@@ -101,11 +101,11 @@ static void points_to_string(){
 
 static void draw_commands(){
     if(show_commands) {
-        ztg_render_string(font_ib8x8u, "Use WASD to move the ball", 5, 237, color_gray);
-        ztg_render_string(font_ib8x8u, "Press 'Q' to exit", 339, 5, color_gray);
-        ztg_render_string(font_ib8x8u, "Press ESC to pause", 331, 18, color_gray);
+        ztg_render_string(font_ib8x8u, "Use WASD to move the ball", 5, 237, C_GRAY);
+        ztg_render_string(font_ib8x8u, "Press 'Q' to exit", 339, 5, C_GRAY);
+        ztg_render_string(font_ib8x8u, "Press ESC to pause", 331, 18, C_GRAY);
     }else {
-        ztg_render_string(font_ib8x8u, "Press 'C' to show the commands", 5, 237, color_gray);
+        ztg_render_string(font_ib8x8u, "Press 'C' to show the commands", 5, 237, C_GRAY);
     }
 }
 
@@ -184,45 +184,45 @@ static void draw_obj(Object obj){
 static bool continue_button(){
     Button continue_b = {
             .bounds = continue_rect,
-            .color_base = color_black,
-            .color_hover = color_gray,
-            .color_pressed = color_red
+            .color_base = C_BLACK ,
+            .color_hover = C_GRAY,
+            .color_pressed = C_RED
     };
-    return ztg_button(continue_b, "CONTINUE", 30, 7, color_red);
+    return ztg_button(continue_b, "CONTINUE", 30, 7, C_RED);
 }
 
 static bool back_to_main_menu_button(){
     Button back_to_main_menu_b = {
             .bounds = back_to_main_menu_rect,
-            .color_base = color_black,
-            .color_hover = color_gray,
-            .color_pressed = color_red
+            .color_base = C_BLACK ,
+            .color_hover = C_GRAY,
+            .color_pressed = C_RED
     };
-    return ztg_button(back_to_main_menu_b, "BACK TO MENU", 20, 7, color_red);
+    return ztg_button(back_to_main_menu_b, "BACK TO MENU", 20, 7, C_RED);
 }
 
 static bool quit_in_pause_button(){
     Button quit_b = {
         .bounds = quit_in_pause_rect,
-        .color_base = color_black,
-        .color_hover = color_gray,
-        .color_pressed = color_red
+        .color_base = C_BLACK ,
+        .color_hover = C_GRAY,
+        .color_pressed = C_RED
     };
-    return ztg_button(quit_b, "QUIT", 50, 7, color_red);
+    return ztg_button(quit_b, "QUIT", 50, 7, C_RED);
 }
 
 static bool quit_in_menu_button(){
     Button quit_b = {
             .bounds = quit_in_menu_rect,
-            .color_base = color_black,
-            .color_hover = color_gray,
-            .color_pressed = color_red
+            .color_base = C_BLACK ,
+            .color_hover = C_GRAY,
+            .color_pressed = C_RED
     };
-    return ztg_button(quit_b, "QUIT", 50, 7, color_red);
+    return ztg_button(quit_b, "QUIT", 50, 7, C_RED);
 }
 
 static void level_pause(){
-    ztg_render_string(font_ib8x8u, "PAUSE", 190, 30, color_red);
+    ztg_render_string(font_ib8x8u, "PAUSE", 190, 30, C_RED);
     if(continue_button()){
         player_stats.curr_level = IN_GAME;
     }
@@ -239,17 +239,17 @@ static void level_pause(){
 static void level_lost(){
     points_to_string();
     lost_screen_duration++;
-    ztg_render_string(font_ib8x8u, "YOU LOST", 140, 100, color_red);
+    ztg_render_string(font_ib8x8u, "YOU LOST", 140, 100, C_RED);
     if(new_record){
         player_stats.high_score = player_stats.points;
         sprintf(points_str, "Points : %d", player_stats.points);
-        ztg_render_string(font_ib8x8u, "NEW RECORD ", 140, 115, color_red);
-        ztg_render_string(font_ib8x8u, points_str, 229, 115, color_gray);
+        ztg_render_string(font_ib8x8u, "NEW RECORD ", 140, 115, C_RED);
+        ztg_render_string(font_ib8x8u, points_str, 229, 115, C_GRAY);
     }else {
         points_to_string();
-        ztg_render_string(font_ib8x8u, points_str, 160, 115, color_gray);
+        ztg_render_string(font_ib8x8u, points_str, 160, 115, C_GRAY);
     }
-    if(lost_screen_duration >= 300){
+    if(lost_screen_duration >= 100){
         lost_screen_duration = 0;
         player_stats.points = 0;
         player_stats.curr_level = MAIN_MENU;
@@ -259,8 +259,8 @@ static void level_lost(){
 static void level_in_game(float elapsedTime){
     check_if_lost();
     points_to_string();
-    ztg_show_fps(5, 5, color_red);
-    ztg_render_string(font_ib8x8u, points_str, 339, 5, color_green);
+    ztg_show_fps(5, 5, C_RED);
+    ztg_render_string(font_ib8x8u, points_str, 339, 5, C_GREEN);
     create_new_point();
     player_movement(elapsedTime);
     collide_with_point();
@@ -271,9 +271,9 @@ static void level_in_game(float elapsedTime){
 
 
 static void level_main_menu(){
-    ztg_render_string(font_ib8x8u, "FatBall Console Game", 140, 80, color_red);
-    ztg_render_string(font_ib8x8u, "Press any key to start", 135, 115, color_red);
-    ztg_render_string(font_ib8x8u, "Made By Luigi Inquieto", 299, 237, color_gray);
+    ztg_render_string(font_ib8x8u, "FatBall Console Game", 140, 80, C_RED);
+    ztg_render_string(font_ib8x8u, "Press any key to start", 135, 115, C_RED);
+    ztg_render_string(font_ib8x8u, "Made By Luigi Inquieto", 299, 237, C_GRAY);
     if(quit_in_menu_button()) ztg_shut_app();
     draw_commands();
 }

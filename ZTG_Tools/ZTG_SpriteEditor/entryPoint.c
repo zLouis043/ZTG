@@ -21,7 +21,7 @@ typedef struct grid{
 }Grid;
 
 int g_color_selected = 15;
-int g_mouse_color = color_black;
+int g_mouse_color = C_BLACK ;
 int g_cell_width = 20;
 int g_cell_height = 20;
 int g_max_cells = 16;
@@ -66,7 +66,7 @@ bool g_has_changes = true;
 
 static int draw_buttons(int buttons_count, int x, int y, int width, int height, int padding){
 
-    int button_clicked = color_black;
+    int button_clicked = C_BLACK ;
 
     for(int i = 0; i < buttons_count; i++){
         Rect button_bounds = {
@@ -79,10 +79,10 @@ static int draw_buttons(int buttons_count, int x, int y, int width, int height, 
                 .bounds = button_bounds,
                 .color_base = i+1,
                 .color_hover = i+1,
-                .color_pressed = color_black,
+                .color_pressed = C_BLACK ,
         };
 
-        if(ztg_button(button, "", 0, 0, color_red)){
+        if(ztg_button(button, "", 0, 0, C_RED)){
             button_clicked = i+1;
         }
     }
@@ -124,7 +124,7 @@ static void grid_init(int cell_width, int cell_height){
                 g_grid.cells[idx].curr_color = g_cell_states[idx].curr_color;
                 g_grid.cells[idx].is_empty = g_cell_states[idx].is_empty;
             }else {
-                g_grid.cells[idx].default_color = (i + j) % 2 == 0 ? color_black : color_gray;
+                g_grid.cells[idx].default_color = (i + j) % 2 == 0 ? C_BLACK  : C_GRAY;
                 g_grid.cells[idx].curr_color = g_grid.cells[idx].default_color;
                 g_grid.cells[idx].is_empty = true;
             }
@@ -133,13 +133,13 @@ static void grid_init(int cell_width, int cell_height){
     g_is_size_updated = false;
 }
 
-int g_flood_fill_iteration = 0;
+int g_flood_fill_iteration_numberation = 0;
 int g_flood_fill_limit = 300;
 
 static void fill_color(int x, int y, int new_color, int old_color){
 
-    if(g_flood_fill_iteration > g_flood_fill_limit) return;
-    g_flood_fill_iteration++;
+    if(g_flood_fill_iteration_numberation > g_flood_fill_limit) return;
+    g_flood_fill_iteration_numberation++;
 
     if(x >= g_grid.cells_count_x ||
      x < 0 ||
@@ -172,7 +172,7 @@ static void grid_draw(){
 
     ztg_draw_filled_rect(g_grid.bounds.p1.x, g_grid.bounds.p1.y,
                          g_grid.bounds.p2.x, g_grid.bounds.p2.y,
-                         color_white);
+                         C_WHITE);
 
     int start_x = g_grid.x + g_grid.padding_x;
     int start_y = g_grid.y + g_grid.padding_y;
@@ -187,7 +187,7 @@ static void grid_draw(){
                       g_grid.cells[idx].curr_color)){
                 g_has_changes = true;
                 if(g_fill_mode){
-                    g_flood_fill_iteration = 0;
+                    g_flood_fill_iteration_numberation = 0;
                     g_flood_fill_limit = g_fill_mode ? 600 : 300;
                     fill_color(j, i, g_mouse_color, g_grid.cells[idx].curr_color);
                 }else{
@@ -211,12 +211,12 @@ static void erase_mode_button(){
 
     Button erase_b = {
             .bounds = erase_r,
-            .color_base = color_gray,
-            .color_hover = color_white,
-            .color_pressed = color_blue
+            .color_base = C_GRAY,
+            .color_hover = C_WHITE,
+            .color_pressed = C_BLUE
     };
 
-    if(ztg_button(erase_b, "Erase", 5, 5, color_black)){
+    if(ztg_button(erase_b, "Erase", 5, 5, C_BLACK )){
         g_mouse_color = 0;
         g_fill_mode = false;
     }
@@ -234,12 +234,12 @@ static bool reset_button(){
 
     Button reset_b = {
             .bounds = reset_r,
-            .color_base = color_gray,
-            .color_hover = color_white,
-            .color_pressed = color_blue
+            .color_base = C_GRAY,
+            .color_hover = C_WHITE,
+            .color_pressed = C_BLUE
     };
 
-    return ztg_button(reset_b, "Reset", 5, 5, color_black);
+    return ztg_button(reset_b, "Reset", 5, 5, C_BLACK );
 }
 
 static bool fill_mode_button(){
@@ -255,12 +255,12 @@ static bool fill_mode_button(){
 
     Button fill_b = {
             .bounds = fill_r,
-            .color_base = color_gray,
-            .color_hover = color_white,
-            .color_pressed = color_blue
+            .color_base = C_GRAY,
+            .color_hover = C_WHITE,
+            .color_pressed = C_BLUE
     };
 
-    if(ztg_button(fill_b, "Fill", 5, 5, color_black)){
+    if(ztg_button(fill_b, "Fill", 5, 5, C_BLACK )){
         g_fill_mode = true;
     }
 }
@@ -278,19 +278,19 @@ static bool paint_mode_button(){
 
     Button paint_b = {
             .bounds = paint_r,
-            .color_base = color_gray,
-            .color_hover = color_white,
-            .color_pressed = color_blue
+            .color_base = C_GRAY,
+            .color_hover = C_WHITE,
+            .color_pressed = C_BLUE
     };
 
-    if(ztg_button(paint_b, "Paint", 5, 5, color_black)){
+    if(ztg_button(paint_b, "Paint", 5, 5, C_BLACK )){
         g_fill_mode = false;
     }
 }
 
 static bool change_canvas_size_button(){
 
-    ztg_render_string(font_ib8x8u, "Canvas Size: ", g_tools_buttons_start_x + g_tools_buttons_width + 200, g_grid.y + 5, color_white);
+    ztg_render_string(font_ib8x8u, "Canvas Size: ", g_tools_buttons_start_x + g_tools_buttons_width + 200, g_grid.y + 5, C_WHITE);
 
     Rect canvas_size_r = {
             .p1.x = g_tools_buttons_start_x + 350,
@@ -301,19 +301,19 @@ static bool change_canvas_size_button(){
 
     Button canvas_size_b = {
             .bounds = canvas_size_r,
-            .color_base = color_black,
-            .color_hover = color_gray,
-            .color_pressed = color_blue
+            .color_base = C_BLACK ,
+            .color_hover = C_GRAY,
+            .color_pressed = C_BLUE
     };
 
     char * label= g_is_8x8_grid ? " 8x8" : "16x16";
 
-    return ztg_button(canvas_size_b, label, 5, 5, color_white);
+    return ztg_button(canvas_size_b, label, 5, 5, C_WHITE);
 }
 
 static bool set_name_button(){
 
-    ztg_render_string(font_ib8x8u, "File name:", g_tools_buttons_start_x + g_tools_buttons_width + 200, g_grid.y + 30, color_white);
+    ztg_render_string(font_ib8x8u, "File name:", g_tools_buttons_start_x + g_tools_buttons_width + 200, g_grid.y + 30, C_WHITE);
 
     Rect set_name_r = {
             .p1.x = g_tools_buttons_start_x + 330,
@@ -324,15 +324,15 @@ static bool set_name_button(){
 
     Button set_name_b = {
             .bounds = set_name_r,
-            .color_base = color_black,
-            .color_hover = color_gray,
-            .color_pressed = color_blue
+            .color_base = C_BLACK ,
+            .color_hover = C_GRAY,
+            .color_pressed = C_BLUE
     };
 
     if(g_default_sprite_name){
-        return ztg_button(set_name_b, *save_file_name, 5, 5, color_white);
+        return ztg_button(set_name_b, *save_file_name, 5, 5, C_WHITE);
     }else {
-        return ztg_button(set_name_b, g_file_name, 5, 5, color_white);
+        return ztg_button(set_name_b, g_file_name, 5, 5, C_WHITE);
     }
 }
 
@@ -347,12 +347,12 @@ static bool save_button(){
 
     Button save_b = {
             .bounds = save_r,
-            .color_base = color_black,
-            .color_hover = color_gray,
-            .color_pressed = color_blue
+            .color_base = C_BLACK ,
+            .color_hover = C_GRAY,
+            .color_pressed = C_BLUE
     };
 
-    return ztg_button(save_b, "Save file", 5, 5, color_white);
+    return ztg_button(save_b, "Save file", 5, 5, C_WHITE);
 }
 
 static inline void make_directory(const char* name) {
@@ -401,13 +401,13 @@ static void save(){
 }
 
 static void draw_mode(){
-    ztg_render_string(font_ib8x8u, "Mode: ", 5,237, color_gray);
+    ztg_render_string(font_ib8x8u, "Mode: ", 5,237, C_GRAY);
     if(g_fill_mode){
-        ztg_render_string(font_ib8x8u, "FILL", 54,237, color_blue);
+        ztg_render_string(font_ib8x8u, "FILL", 54,237, C_BLUE);
     }else if(g_mouse_color == 0){
-        ztg_render_string(font_ib8x8u, "ERASE", 54,237, color_blue);
+        ztg_render_string(font_ib8x8u, "ERASE", 54,237, C_BLUE);
     }else{
-        ztg_render_string(font_ib8x8u, "DRAW", 54,237, color_blue);
+        ztg_render_string(font_ib8x8u, "DRAW", 54,237, C_BLUE);
     }
 }
 
@@ -431,8 +431,8 @@ static void draw_saved_popup(){
         ztg_draw_filled_rect(g_save_pop_up_x, g_save_pop_up_y,
                              g_save_pop_up_x + g_save_pop_up_width,
                              g_save_pop_up_y + g_save_pop_up_height,
-                             color_red);
-        ztg_render_string(font_ib8x8u, "Sprite Saved", g_save_pop_up_x + 5, g_save_pop_up_y + 5, color_white);
+                             C_RED);
+        ztg_render_string(font_ib8x8u, "Sprite Saved", g_save_pop_up_x + 5, g_save_pop_up_y + 5, C_WHITE);
         g_save_timer_pop_up++;
         g_save_pop_up_y++;
     }else{
@@ -455,10 +455,10 @@ static void save_before_exit(){
         ztg_draw_filled_rect(save_before_quit_x, save_before_quit_y,
                              save_before_quit_x + save_before_quit_width,
                              save_before_quit_y + save_before_quit_height,
-                             color_black);
-        ztg_render_string(font_ib8x8u, "There are unsaved changes.", save_before_quit_x + 5, save_before_quit_y + 5, color_white);
-        ztg_render_string(font_ib8x8u, "Are you sure you want to", save_before_quit_x + 5, save_before_quit_y + 5 + 13, color_white);
-        ztg_render_string(font_ib8x8u, "quit?", save_before_quit_x + 5, save_before_quit_y + 5 + 13 + 13, color_white);
+                             C_BLACK );
+        ztg_render_string(font_ib8x8u, "There are unsaved changes.", save_before_quit_x + 5, save_before_quit_y + 5, C_WHITE);
+        ztg_render_string(font_ib8x8u, "Are you sure you want to", save_before_quit_x + 5, save_before_quit_y + 5 + 13, C_WHITE);
+        ztg_render_string(font_ib8x8u, "quit?", save_before_quit_x + 5, save_before_quit_y + 5 + 13 + 13, C_WHITE);
 
         Rect yes_r = {
                 .p1.x = save_before_quit_x + 5,
@@ -469,12 +469,12 @@ static void save_before_exit(){
 
         Button yes_b = {
                 .bounds = yes_r,
-                .color_base = color_dark_red,
-                .color_hover = color_red,
-                .color_pressed = color_black
+                .color_base = C_DARK_RED,
+                .color_hover = C_RED,
+                .color_pressed = C_BLACK 
         };
 
-        if(ztg_button(yes_b, "YES", 5, 5, color_white)){
+        if(ztg_button(yes_b, "YES", 5, 5, C_WHITE)){
             ztg_shut_app();
         }
 
@@ -487,12 +487,12 @@ static void save_before_exit(){
 
         Button no_b = {
                 .bounds = no_r,
-                .color_base = color_dark_blue,
-                .color_hover = color_blue,
-                .color_pressed = color_black
+                .color_base = C_DARK_BLUE,
+                .color_hover = C_BLUE,
+                .color_pressed = C_BLACK 
         };
 
-        if(ztg_button(no_b, "NO", 5, 5, color_white)){
+        if(ztg_button(no_b, "NO", 5, 5, C_WHITE)){
             g_wants_to_quit = false;
         }
     }else if(g_wants_to_quit){
@@ -502,7 +502,7 @@ static void save_before_exit(){
 
 void Update(float elapsedTime){
 
-    ztg_render_string(font_ib8x8u, "COLORS: ", 5, 5, color_white);
+    ztg_render_string(font_ib8x8u, "COLORS: ", 5, 5, C_WHITE);
 
     g_color_selected = draw_buttons(15, 69, 5, 10, 10, 5);
 
@@ -558,8 +558,8 @@ void Update(float elapsedTime){
 
     save_before_exit();
 
-    iVec2 mousePos = ztg_get_mouse_pos();
-    ztg_draw_filled_circle(mousePos.x, mousePos.y, 2, g_mouse_color);
+    iVec2 mouse_pos = ztg_get_mouse_pos();
+    ztg_draw_filled_circle(mouse_pos.x, mouse_pos.y, 2, g_mouse_color);
 
 }
 

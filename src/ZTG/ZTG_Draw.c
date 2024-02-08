@@ -43,25 +43,25 @@ bool ztg_mov_to(size_t x, size_t y){
 }
 
 void ztg_mask_begin(size_t x1, size_t y1, size_t x2, size_t y2, maskType mask_type){
-    window.isMaskOn = true;
-    window.mask_x1 = x1;
-    window.mask_y1 = y1;
-    window.mask_x2 = x2;
-    window.mask_y2 = y2;
+    window.is_mask_enabled = true;
+    window.mask_bounds.p1.x = x1;
+    window.mask_bounds.p1.y = y1;
+    window.mask_bounds.p2.x = x2;
+    window.mask_bounds.p2.y = y2;
     window.mask_type = mask_type;
 }
 
 void ztg_mask_end(){
-    window.isMaskOn = false;
+    window.is_mask_enabled = false;
 }
 
 void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int background_color){
     if(ztg_mov_to(x, y)) {
-        if (window.isMaskOn) {
+        if (window.is_mask_enabled) {
             switch (window.mask_type) {
                 case INSIDE: {
-                    if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
-                        if (!window.enableWrapAround) {
+                    if (x < window.mask_bounds.p1.x || x > window.mask_bounds.p2.x || y < window.mask_bounds.p1.y || y > window.mask_bounds.p2.y) {
+                        if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = c;
@@ -75,8 +75,8 @@ void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int backgr
                     break;
                 }
                 case OUTSIDE: {
-                    if (x >= window.mask_x1 || x <= window.mask_x2 || y >= window.mask_y1 || y <= window.mask_y2) {
-                        if (!window.enableWrapAround) {
+                    if (x >= window.mask_bounds.p1.x || x <= window.mask_bounds.p2.x || y >= window.mask_bounds.p1.y || y <= window.mask_bounds.p2.y) {
+                        if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = c;
@@ -91,7 +91,7 @@ void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int backgr
                 }
             }
         } else {
-            if (!window.enableWrapAround) {
+            if (!window.is_wrap_around_enabled) {
                 if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                     window.curr_y < window.height) {
                     window.buffer[window.curr_idx].Char.UnicodeChar = c;
@@ -107,11 +107,11 @@ void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int backgr
 
 void ztg_draw_pixel(size_t x, size_t y, int color){
     if(ztg_mov_to(x, y)){
-        if(window.isMaskOn){
+        if(window.is_mask_enabled){
             switch(window.mask_type) {
                 case INSIDE: {
-                    if (x < window.mask_x1 || x > window.mask_x2 || y < window.mask_y1 || y > window.mask_y2) {
-                        if (!window.enableWrapAround) {
+                    if (x < window.mask_bounds.p1.x || x > window.mask_bounds.p2.x || y < window.mask_bounds.p1.y || y > window.mask_bounds.p2.y) {
+                        if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
@@ -124,8 +124,8 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                     }break;
                 }
                 case OUTSIDE:{
-                    if (x >= window.mask_x1 && x <= window.mask_x2 && y >= window.mask_y1 && y <= window.mask_y2) {
-                        if (!window.enableWrapAround) {
+                    if (x >= window.mask_bounds.p1.x && x <= window.mask_bounds.p2.x && y >= window.mask_bounds.p1.y && y <= window.mask_bounds.p2.y) {
+                        if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
@@ -139,7 +139,7 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                 }
             }
         }else{
-            if(!window.enableWrapAround) {
+            if(!window.is_wrap_around_enabled) {
                 if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                     window.curr_y < window.height) {
                     window.buffer[window.curr_idx].Char.UnicodeChar = ' ';
@@ -638,11 +638,11 @@ void ztg_draw_char_Vec(short c, iVec2 v, int foreground_color, int background_co
 }
 
 void ztg_mask_begin_Vec(iVec2 v1, iVec2 v2, maskType mask_type){
-    window.isMaskOn = true;
-    window.mask_x1 = v1.x;
-    window.mask_y1 = v1.y;
-    window.mask_x2 = v2.x;
-    window.mask_y2 = v2.y;
+    window.is_mask_enabled = true;
+    window.mask_bounds.p1.x = v1.x;
+    window.mask_bounds.p1.y = v1.y;
+    window.mask_bounds.p2.x = v2.x;
+    window.mask_bounds.p2.y = v2.y;
     window.mask_type = mask_type;
 }
 
@@ -732,5 +732,5 @@ void ztg_show_fps(int x, int y, int color){
     char fps[256];
     snprintf(fps, 256, "%3.2ffps", 1000 / window.elapsed_time);
     ztg_render_string(font_ib8x8u, s, x, y, color);
-    ztg_render_string(font_ib8x8u, fps, x + (font_ib8x8u.Width * 6), y, color_gray);
+    ztg_render_string(font_ib8x8u, fps, x + (font_ib8x8u.Width * 6), y, C_GRAY);
 }
