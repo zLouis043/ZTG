@@ -2,7 +2,7 @@
 
 int main(void){
     /*Init the console with a Title, width, height, the resolution on the x axis and y axis*/
-    ztg_init("FatBall", 480, 250, 2, 2);
+    ztg_init(ztg_format_text("%s", "FatBall"), 480, 250, 2, 2);
 
     /*Start the console clock*/
     ztg_start_clock();

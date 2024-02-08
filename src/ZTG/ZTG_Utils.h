@@ -159,6 +159,14 @@ ZTGAPI int ztg_rand_range(int min, int max);
 ZTGAPI void ztg_make_directory(const char* name);
 
 /*!
+ * @brief Formats a string and returns it
+ * @param fmt TYPE : (char *)\n The string to format
+ * @param .. The variadic parameters
+ * @return TYPE : (char *)\n The formatted string
+ */
+ZTGAPI char* ztg_format_text(char * fmt, ...);
+
+/*!
  * @brief Get a color given its RGB value and its intensity 
  * @param R  TYPE : (int)\n The Red presence (can be 0 or 1 depending on its presence in the color)
  * @param G  TYPE : (int)\n The Green presence (can be 0 or 1 depending on its presence in the color)

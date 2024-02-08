@@ -23,7 +23,9 @@ SOFTWARE.
 
  */
 
+#include <stdio.h>
 #include <time.h>
+#include <stdarg.h>
 #include "ZTG_Utils.h"
 
 int ztg_get_console_width(){
@@ -124,6 +126,17 @@ int ztg_rand_range(int min, int max){
 
 inline void ztg_make_directory(const char* name) {
     CreateDirectory(name, NULL);
+}
+
+inline char* ztg_format_text(char * fmt, ...){
+    char * buffer = malloc(1024 * sizeof(char));
+    va_list args;
+    va_start(args, fmt);
+    vsprintf(buffer, fmt, args);
+    va_end(args);
+    int len = strlen(buffer);
+    buffer[len] = 0;
+    return buffer;
 }
 
 inline int ztg_get_color_from_rgb(int R, int G, int B, int Intensity){
