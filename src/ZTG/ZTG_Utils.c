@@ -125,3 +125,20 @@ int ztg_rand_range(int min, int max){
 inline void ztg_make_directory(const char* name) {
     CreateDirectory(name, NULL);
 }
+
+inline int ztg_get_color_from_rgb(int R, int G, int B, int Intensity){
+    return (R << 2) | (G << 1) | (B << 0) | (Intensity << 3);
+}
+
+inline int ztg_get_value_from_color(Color color){
+    return (color.R << 2) | (color.G << 1) | (color.B << 0) | (color.Intensity << 3);
+}   
+
+Color ztg_get_color_from_value(int color){
+    return (Color){
+        .R = 1 & (color >> 2),
+        .G = 1 & (color >> 1),
+        .B = 1 & (color >> 0),
+        .Intensity = 1 & (color >> 3)
+    };
+}

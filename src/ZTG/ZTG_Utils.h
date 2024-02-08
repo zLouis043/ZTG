@@ -158,4 +158,28 @@ ZTGAPI int ztg_rand_range(int min, int max);
  */
 ZTGAPI void ztg_make_directory(const char* name);
 
+/*!
+ * @brief Get a color given its RGB value and its intensity 
+ * @param R  TYPE : (int)\n The Red presence (can be 0 or 1 depending on its presence in the color)
+ * @param G  TYPE : (int)\n The Green presence (can be 0 or 1 depending on its presence in the color)
+ * @param B  TYPE : (int)\n The Blue presence (can be 0 or 1 depending on its presence in the color)
+ * @param Intensity  TYPE : (int)\n The Lightness (can be 0 or 1 depending on its presence in the color)
+ * @return TYPE : (int) \n The color defined 
+ */
+ZTGAPI int ztg_get_color_from_rgb(int R, int G, int B, int Intensity);
+
+/*!
+ * @brief Get a color value from its Color 
+ * @param color TYPE : (Color)\n The color
+ * @return TYPE : (int) \n The color value
+ */
+ZTGAPI int ztg_get_value_from_color(Color color);
+
+/*!
+ * @brief Get a color from the color value 
+ * @param color TYPE : (int)\n The color value 
+ * @return TYPE : (Color) \n The color 
+ */
+ZTGAPI Color ztg_get_color_from_value(int color);
+
 #endif //ZTG_UTILS_H
