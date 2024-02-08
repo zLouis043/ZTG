@@ -22,7 +22,7 @@ Compile the library as a static library and include it in your own project inclu
 
 ```c
 
-#include "entryPoint.h"
+#include "ZTG.H"
 
 int main(void){
     /*Init the console with a Title, width, height, the resolution on the x axis and y axis*/
