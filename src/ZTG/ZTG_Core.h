@@ -87,7 +87,7 @@ typedef struct ztg_window Window;
  */
 struct ztg_window{
     const char * title;
-    CHAR_INFO  buffer[BUFF_MAX_WIDTH * BUFF_MAX_HEIGHT];
+    CHAR_INFO * buffer;
     size_t width;
     size_t height;
 

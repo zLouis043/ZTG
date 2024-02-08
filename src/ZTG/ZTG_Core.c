@@ -131,6 +131,9 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
 
     window.width = width;
     window.height = height;
+
+    window.buffer = (CHAR_INFO*)calloc(window.width * window.height, sizeof(CHAR_INFO));
+
     window.title = title;
     window.buff_size_ad_coord = (COORD) {width, height};
     window.console_write_rect = (SMALL_RECT){ 0, 0, (short)(window.width - 1), (short)(window.height - 1) };
@@ -195,7 +198,7 @@ void ztg_swap_buffer(){
         exit(EXIT_FAILURE); //! Exit if fail
     }
 
-    window.iteration_number++; //! Increment the iteration_number
+    window.iteration_number++; //! Increment the iteration
 }
 
 /*!
@@ -263,5 +266,6 @@ void ztg_io(){
  * @brief Close the console and set it to its original handle 
  */
 void ztg_close(){
+    free(window.buffer);
     SetConsoleActiveScreenBuffer(window.handles[0]);
 }
