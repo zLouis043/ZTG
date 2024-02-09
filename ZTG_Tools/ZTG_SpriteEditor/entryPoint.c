@@ -78,11 +78,11 @@ static int draw_buttons(int buttons_count, int x, int y, int width, int height, 
         Button button = {
                 .bounds = button_bounds,
                 .color_base = i+1,
-                .color_hover = i+1,
-                .color_pressed = C_BLACK ,
+                .color_hover = SHADE_DARK | i+1,
+                .color_pressed = SHADE_VERY_DARK | i+1,
         };
 
-        if(ztg_button(button, "", 0, 0, C_RED)){
+        if(ztg_button(button, "", 0, 0, C_LIGHT_RED)){
             button_clicked = i+1;
         }
     }
@@ -101,7 +101,7 @@ static bool draw_cell(int x1, int y1, int width, int height, int color){
     Button cell_b = {
             .bounds = cell_r,
             .color_base = color,
-            .color_hover = C_GRAY,
+            .color_hover = C_LIGHT_GRAY,
             .color_pressed = color
     };
 
@@ -213,7 +213,7 @@ static void erase_mode_button(){
             .bounds = erase_r,
             .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
-            .color_pressed = C_BLUE
+            .color_pressed = C_LIGHT_BLUE
     };
 
     if(ztg_button(erase_b, "Erase", 5, 5, C_BLACK )){
@@ -236,7 +236,7 @@ static bool reset_button(){
             .bounds = reset_r,
             .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
-            .color_pressed = C_BLUE
+            .color_pressed = C_LIGHT_BLUE
     };
 
     return ztg_button(reset_b, "Reset", 5, 5, C_BLACK );
@@ -257,7 +257,7 @@ static bool fill_mode_button(){
             .bounds = fill_r,
             .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
-            .color_pressed = C_BLUE
+            .color_pressed = C_LIGHT_BLUE
     };
 
     if(ztg_button(fill_b, "Fill", 5, 5, C_BLACK )){
@@ -280,7 +280,7 @@ static bool paint_mode_button(){
             .bounds = paint_r,
             .color_base = C_DARK_GRAY,
             .color_hover = C_WHITE,
-            .color_pressed = C_BLUE
+            .color_pressed = C_LIGHT_BLUE
     };
 
     if(ztg_button(paint_b, "Paint", 5, 5, C_BLACK )){
@@ -303,7 +303,7 @@ static bool change_canvas_size_button(){
             .bounds = canvas_size_r,
             .color_base = C_BLACK ,
             .color_hover = C_DARK_GRAY,
-            .color_pressed = C_BLUE
+            .color_pressed = C_LIGHT_BLUE
     };
 
     char * label= g_is_8x8_grid ? " 8x8" : "16x16";
@@ -325,8 +325,8 @@ static bool set_name_button(){
     Button set_name_b = {
             .bounds = set_name_r,
             .color_base = C_BLACK ,
-            .color_hover = C_GRAY,
-            .color_pressed = C_BLUE
+            .color_hover = C_LIGHT_GRAY,
+            .color_pressed = C_LIGHT_BLUE
     };
 
     if(g_default_sprite_name){
@@ -349,7 +349,7 @@ static bool save_button(){
             .bounds = save_r,
             .color_base = C_BLACK ,
             .color_hover = C_DARK_GRAY,
-            .color_pressed = C_BLUE
+            .color_pressed = C_LIGHT_BLUE
     };
 
     return ztg_button(save_b, "Save file", 5, 5, C_WHITE);
@@ -401,13 +401,13 @@ static void save(){
 }
 
 static void draw_mode(){
-    ztg_render_string(font_ib8x8u, "Mode: ", 5,237, C_GRAY);
+    ztg_render_string(font_ib8x8u, "Mode: ", 5,237, C_LIGHT_GRAY);
     if(g_fill_mode){
-        ztg_render_string(font_ib8x8u, "FILL", 54,237, C_BLUE);
+        ztg_render_string(font_ib8x8u, "FILL", 54,237, C_LIGHT_BLUE);
     }else if(g_mouse_color == 0){
-        ztg_render_string(font_ib8x8u, "ERASE", 54,237, C_BLUE);
+        ztg_render_string(font_ib8x8u, "ERASE", 54,237, C_LIGHT_BLUE);
     }else{
-        ztg_render_string(font_ib8x8u, "DRAW", 54,237, C_BLUE);
+        ztg_render_string(font_ib8x8u, "DRAW", 54,237, C_LIGHT_BLUE);
     }
 }
 
@@ -431,7 +431,7 @@ static void draw_saved_popup(){
         ztg_draw_filled_rect(g_save_pop_up_x, g_save_pop_up_y,
                              g_save_pop_up_x + g_save_pop_up_width,
                              g_save_pop_up_y + g_save_pop_up_height,
-                             C_RED);
+                             C_LIGHT_RED);
         ztg_render_string(font_ib8x8u, "Sprite Saved", g_save_pop_up_x + 5, g_save_pop_up_y + 5, C_WHITE);
         g_save_timer_pop_up++;
         g_save_pop_up_y++;
@@ -470,7 +470,7 @@ static void save_before_exit(){
         Button yes_b = {
                 .bounds = yes_r,
                 .color_base = C_DARK_RED,
-                .color_hover = C_RED,
+                .color_hover = C_LIGHT_RED,
                 .color_pressed = C_BLACK 
         };
 
@@ -488,7 +488,7 @@ static void save_before_exit(){
         Button no_b = {
                 .bounds = no_r,
                 .color_base = C_DARK_BLUE,
-                .color_hover = C_BLUE,
+                .color_hover = C_LIGHT_BLUE,
                 .color_pressed = C_BLACK 
         };
 

@@ -161,11 +161,15 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
      * Setup every handle size, mode and fonts
      */
     SetConsoleTitle(window.title);
-    SetConsoleMode(window.handles[1], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
+    SMALL_RECT m_rectWindow = { 0, 0, 1, 1 };
+    
+    SetConsoleWindowInfo(window.handles[1], TRUE, &m_rectWindow);
     SetConsoleScreenBufferSize(window.handles[1], window.buff_size_ad_coord);
     SetConsoleWindowInfo(window.handles[1], TRUE, &window.console_write_rect);
     SetCurrentConsoleFontEx(window.handles[1],false, &cfi);
     SetConsoleMode(window.handles[1], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
+
+    SetConsoleWindowInfo(window.handles[2], TRUE, &m_rectWindow);
     SetConsoleScreenBufferSize(window.handles[2], window.buff_size_ad_coord);
     SetConsoleWindowInfo(window.handles[2], TRUE, &window.console_write_rect);
     SetCurrentConsoleFontEx(window.handles[2],false, &cfi);
@@ -174,7 +178,7 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     /*!
      * Set the modes for the Inputs Handle
      */
-    SetConsoleMode(window.handle_in, ENABLE_ECHO_INPUT|ENABLE_LINE_INPUT|ENABLE_MOUSE_INPUT|ENABLE_EXTENDED_FLAGS);
+    SetConsoleMode(window.handle_in, ENABLE_WINDOW_INPUT|ENABLE_MOUSE_INPUT|ENABLE_EXTENDED_FLAGS);
 
 }
 
@@ -207,7 +211,34 @@ void ztg_swap_buffer(){
  */
 void ztg_io(){
 
-    ReadConsoleInput(window.handle_in, window.input_record, 128, &window.events);
+    for (int i = 0; i < 256; i++){
+        window.key_new_state[i] = GetAsyncKeyState(i);
+
+        window.kButtons[i].pressed = false;
+        window.kButtons[i].released = false;
+
+        if (window.key_new_state[i] != window.key_old_state[i])
+        {
+            if (window.key_new_state[i] & 0x8000)
+            {
+                window.kButtons[i].pressed = !window.kButtons[i].held;
+                window.kButtons[i].held = true;
+            }
+            else
+            {
+                window.kButtons[i].released = true;
+                window.kButtons[i].held = false;
+            }
+        }
+
+        window.key_old_state[i] = window.key_new_state[i];
+    }
+
+    GetNumberOfConsoleInputEvents(window.handle_in, &window.events);
+    if (window.events > 0){
+        ReadConsoleInput(window.handle_in, window.input_record, window.events, &window.events);
+    }
+
     window.is_key_pressed = false;
     for(int i = 0; i < window.events; i++) {
         switch (window.input_record[i].EventType) {
@@ -216,22 +247,20 @@ void ztg_io(){
                 if(window.key_button_pressed != window.input_record[i].Event.KeyEvent.wVirtualKeyCode) {
                     window.key_button_pressed = window.input_record[i].Event.KeyEvent.wVirtualKeyCode;
                 }
-            }break;
+            }
             case MOUSE_EVENT: {
+                //SetConsoleCursorPosition(window.handles[3],window.mouse_pos);
                 switch (window.input_record[i].Event.MouseEvent.dwEventFlags){
                     case 0:{
                         for (int m = 0; m < 5; m++){
                             window.mouse_new_state[m] = (window.input_record[i].Event.MouseEvent.dwButtonState & (1 << m)) > 0;
                         }
                     }break;
-                    case MOUSE_EVENT:{
-                        SetConsoleCursorPosition(window.handles[3],window.mouse_pos);
-                    }
-                    case MOUSE_MOVED:{
+                    case MOUSE_MOVED:{                    
                         window.mouse_pos.X = window.input_record[i].Event.MouseEvent.dwMousePosition.X;
                         window.mouse_pos.Y = window.input_record[i].Event.MouseEvent.dwMousePosition.Y;
-                    default: break;
                     }
+                    default: break;
                 }
 
                 for (int m = 0; m < 5; m++){
@@ -260,7 +289,7 @@ void ztg_io(){
 
         }
     }
-    FlushConsoleInputBuffer(window.handle_in);
+    //FlushConsoleInputBuffer(window.handle_in);
 }
 
 /*!

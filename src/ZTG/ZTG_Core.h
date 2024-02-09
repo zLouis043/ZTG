@@ -37,16 +37,16 @@ Character Set -> Use Unicode.
 #endif
 
 /*!
- * @struct mouseButtons
- * @param pressed TYPE : (bool)\n Check if the specified mouse button has been pressed
- * @param released TYPE : (bool)\n Check if the specified mouse button has been released
- * @param held TYPE : (bool)\n Check if the specified mouse button is held
+ * @struct keyState
+ * @param pressed TYPE : (bool)\n Check if the specified key button has been pressed
+ * @param released TYPE : (bool)\n Check if the specified key button has been released
+ * @param held TYPE : (bool)\n Check if the specified key button is held
  */
-typedef struct ztg_mouseButtons{
+typedef struct ztg_key_states{
     bool pressed;
     bool released;
     bool held;
-}mouseButtons;
+}keyState;
 
 typedef enum ztg_mask_type{
     INSIDE,
@@ -101,15 +101,18 @@ struct ztg_window{
 
     COORD window_coord_as_coord;
     SMALL_RECT console_write_rect;
-    INPUT_RECORD input_record[128];
+    INPUT_RECORD input_record[32];
     DWORD events;
     bool buffer_switch;
 
     bool is_key_pressed;
-    WORD key_button_pressed;
+    short key_button_pressed;
+    short key_old_state[256];
+	short key_new_state[256];
+    keyState kButtons[256];
     bool mouse_old_state[5];
     bool mouse_new_state[5];
-    mouseButtons mButtons[5];
+    keyState mButtons[5];
     COORD mouse_pos;
 
     int time_point_1;

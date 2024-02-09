@@ -49,7 +49,7 @@ int ztg_get_frame_count(){
 }
 
 bool ztg_is_key_pressed(KeyCode Key){
-    return (window.is_key_pressed && window.key_button_pressed == Key);
+    return (window.kButtons[Key].pressed);
 }
 
 KeyCode ztg_get_key_pressed(){
@@ -61,7 +61,7 @@ bool ztg_is_keyboard_pressed(){
 }
 
 bool ztg_is_keyboard_pressed_except(KeyCode Key){
-    return (window.is_key_pressed && window.key_button_pressed != Key);
+    return (window.is_key_pressed && !window.kButtons[Key].pressed);
 }
 
 bool ztg_is_key_pressed_between(KeyCode Key_1, KeyCode Key_2){
@@ -139,19 +139,56 @@ inline char* ztg_format_text(char * fmt, ...){
     return buffer;
 }
 
-inline int ztg_get_color_from_rgb(int R, int G, int B, int Intensity){
-    return (R << 2) | (G << 1) | (B << 0) | (Intensity << 3);
+inline void ztg_set_console_title(const char* title){ 
+    SetConsoleTitle(title);
+}
+
+inline int ztg_get_color_from_rgb(int R, int G, int B, int Intensity, Shades Shade){
+
+    int shade_pos = 0;
+
+    switch(Shade){
+        case VERY_DARK: shade_pos = 7; break;
+        case DARK: shade_pos = 6; break;
+        case NORMAL: shade_pos = 5; break;
+        case LIGHT: shade_pos = 4; break;
+    }
+
+    return (R << 2) | (G << 1) | (B << 0) | (Intensity << 3) | (1 << shade_pos);
 }
 
 inline int ztg_get_value_from_color(Color color){
-    return (color.R << 2) | (color.G << 1) | (color.B << 0) | (color.Intensity << 3);
+
+    int shade_pos = 0;
+
+    switch(color.Shade){
+        case VERY_DARK: shade_pos = 7; break;
+        case DARK: shade_pos = 6; break;
+        case NORMAL: shade_pos = 5; break;
+        case LIGHT: shade_pos = 4; break;
+    }
+
+    return (color.R << 2) | (color.G << 1) | (color.B << 0) | (color.Intensity << 3) | (1 << color.Shade);
 }   
 
 Color ztg_get_color_from_value(int color){
+
+    int shade;
+    if(color >> 4 & 1){
+        shade = 4;
+    }else if(color >> 5 & 1){
+        shade = 5;
+    }else if(color >> 6 & 1){
+        shade = 6;
+    }else if(color >> 7 & 1){
+        shade = 7;
+    }
+
     return (Color){
         .R = 1 & (color >> 2),
         .G = 1 & (color >> 1),
         .B = 1 & (color >> 0),
-        .Intensity = 1 & (color >> 3)
+        .Intensity = 1 & (color >> 3),
+        .Shade = shade
     };
 }

@@ -167,6 +167,12 @@ ZTGAPI void ztg_make_directory(const char* name);
 ZTGAPI char* ztg_format_text(char * fmt, ...);
 
 /*!
+ * @brief Sets the console title
+ * @param title TYPE : (const char *)\n The title of the console 
+ */
+ZTGAPI void ztg_set_console_title(const char* title);
+
+/*!
  * @brief Get a color given its RGB value and its intensity 
  * @param R  TYPE : (int)\n The Red presence (can be 0 or 1 depending on its presence in the color)
  * @param G  TYPE : (int)\n The Green presence (can be 0 or 1 depending on its presence in the color)
@@ -174,7 +180,7 @@ ZTGAPI char* ztg_format_text(char * fmt, ...);
  * @param Intensity  TYPE : (int)\n The Lightness (can be 0 or 1 depending on its presence in the color)
  * @return TYPE : (int) \n The color defined 
  */
-ZTGAPI int ztg_get_color_from_rgb(int R, int G, int B, int Intensity);
+ZTGAPI int ztg_get_color_from_rgb(int R, int G, int B, int Intensity, Shades Shade);
 
 /*!
  * @brief Get a color value from its Color 

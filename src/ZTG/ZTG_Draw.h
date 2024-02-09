@@ -34,6 +34,7 @@ SOFTWARE.
 #include "ZTG_Vectors.h"
 #include "Fonts/fonts.h"
 
+
 extern Window window;
 
 ZTGAPI bool ztg_mov_to(size_t x, size_t y);
