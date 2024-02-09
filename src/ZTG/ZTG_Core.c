@@ -162,7 +162,7 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
      */
     SetConsoleTitle(window.title);
     SMALL_RECT m_rectWindow = { 0, 0, 1, 1 };
-    
+
     SetConsoleWindowInfo(window.handles[1], TRUE, &m_rectWindow);
     SetConsoleScreenBufferSize(window.handles[1], window.buff_size_ad_coord);
     SetConsoleWindowInfo(window.handles[1], TRUE, &window.console_write_rect);
@@ -296,6 +296,6 @@ void ztg_io(){
  * @brief Close the console and set it to its original handle 
  */
 void ztg_close(){
-    free(window.buffer);
     SetConsoleActiveScreenBuffer(window.handles[0]);
+    free(window.buffer);
 }

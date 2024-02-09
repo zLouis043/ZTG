@@ -35,32 +35,20 @@ SOFTWARE.
 
 #define BUFF_MAX_WIDTH 640
 #define BUFF_MAX_HEIGHT 340
-/*
-#define C_BLACK		    0x0000
-#define C_DARK_BLUE     0x0001	
-#define C_DARK_GREEN    0x0002
-#define C_DARK_CYAN     0x0003
-#define C_DARK_RED      0x0004
-#define C_DARK_MAGENTA  0x0005
-#define C_DARK_YELLOW   0x0006
-#define C_LIGHT_GRAY    0x0007
-#define C_DARK_GRAY     0x0008
 
-#define C_LIGHT_BLUE	0x0009
-#define C_LIGHT_GREEN	0x000A
-#define C_LIGHT_CYAN	0x000B
-#define C_LIGHT_RED	    0x000C
-#define C_LIGHT_MAGENTA	0x000D
-#define C_LIGHT_YELLOW	0x000E
-#define C_WHITE		    0x000F
-*/
-
+/*!
+ * @typedef Shades
+ * @param VERY_DARK 
+ * @param DARK
+ * @param NORMAL
+ * @param LIGHT
+ */
 typedef enum ztg_shades{
     VERY_DARK = '#',
     DARK = 'o',
     NORMAL = '^',
     LIGHT = '_',
-}Shades;
+}Shades;  
 
 #define SHADE_VERY_DARK 1 << 7
 #define SHADE_DARK 1 << 6

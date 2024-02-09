@@ -101,7 +101,7 @@ static bool draw_cell(int x1, int y1, int width, int height, int color){
     Button cell_b = {
             .bounds = cell_r,
             .color_base = color,
-            .color_hover = C_LIGHT_GRAY,
+            .color_hover = SHADE_DARK | color,
             .color_pressed = color
     };
 
