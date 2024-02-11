@@ -143,52 +143,47 @@ inline void ztg_set_console_title(const char* title){
     SetConsoleTitle(title);
 }
 
-inline int ztg_get_color_from_rgb(int R, int G, int B, int Intensity, Shades Shade){
+inline int ztg_get_color_from_rgb(int R, int G, int B, int Intensity){
 
-    int shade_pos = 0;
-
-    switch(Shade){
-        case VERY_DARK: shade_pos = 7; break;
-        case DARK: shade_pos = 6; break;
-        case NORMAL: shade_pos = 5; break;
-        case LIGHT: shade_pos = 4; break;
-    }
-
-    return (R << 2) | (G << 1) | (B << 0) | (Intensity << 3) | (1 << shade_pos);
+    return (R << 2) | (G << 1) | (B << 0) | (Intensity << 3);
 }
 
 inline int ztg_get_value_from_color(Color color){
-
-    int shade_pos = 0;
-
-    switch(color.Shade){
-        case VERY_DARK: shade_pos = 7; break;
-        case DARK: shade_pos = 6; break;
-        case NORMAL: shade_pos = 5; break;
-        case LIGHT: shade_pos = 4; break;
-    }
-
-    return (color.R << 2) | (color.G << 1) | (color.B << 0) | (color.Intensity << 3) | (1 << color.Shade);
+    return (color.R << 2) | (color.G << 1) | (color.B << 0) | (color.Intensity << 3);
 }   
 
 Color ztg_get_color_from_value(int color){
-
-    int shade;
-    if(color >> 4 & 1){
-        shade = 4;
-    }else if(color >> 5 & 1){
-        shade = 5;
-    }else if(color >> 6 & 1){
-        shade = 6;
-    }else if(color >> 7 & 1){
-        shade = 7;
-    }
 
     return (Color){
         .R = 1 & (color >> 2),
         .G = 1 & (color >> 1),
         .B = 1 & (color >> 0),
-        .Intensity = 1 & (color >> 3),
-        .Shade = shade
+        .Intensity = 1 & (color >> 3)
     };
+}
+
+Sprite * ztg_create_sprite_from_file(const char * filename){
+
+    FILE *fp; //fopen(filename, "r");
+    fopen_s(&fp, filename, "r");
+
+    if(!fp){
+        fprintf(stderr, "Couldn't open sprite file %s", filename);
+        system("pause");
+        exit(EXIT_FAILURE);
+    }
+
+    Sprite * sprite = (Sprite *)malloc(sizeof(Sprite));
+
+    int curr_color = 0;
+    fscanf(fp, "%d %d", sprite->width, sprite->height);
+    
+    for(size_t i = 0; i < sprite->width; i++){
+        for(size_t j = 0 ; j < sprite->height; j++){
+            fscanf(fp, "%d", &curr_color);
+            sprite->pixels[get_index_from_2d(i, j, sprite->width)] = ztg_get_color_from_value(curr_color);
+        }
+    }
+    fclose(fp);
+    return sprite;
 }

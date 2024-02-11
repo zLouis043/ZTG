@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "ztg.h": "c"
+        "ztg.h": "c",
+        "fcntl.h": "c"
     },
     "cSpell.words": [
         "ZTGAPI"

@@ -180,7 +180,7 @@ ZTGAPI void ztg_set_console_title(const char* title);
  * @param Intensity  TYPE : (int)\n The Lightness (can be 0 or 1 depending on its presence in the color)
  * @return TYPE : (int) \n The color defined 
  */
-ZTGAPI int ztg_get_color_from_rgb(int R, int G, int B, int Intensity, Shades Shade);
+ZTGAPI int ztg_get_color_from_rgb(int R, int G, int B, int Intensity);
 
 /*!
  * @brief Get a color value from its Color 
@@ -195,5 +195,7 @@ ZTGAPI int ztg_get_value_from_color(Color color);
  * @return TYPE : (Color) \n The color 
  */
 ZTGAPI Color ztg_get_color_from_value(int color);
+
+ZTGAPI Sprite * ztg_create_sprite_from_file(const char * filename);
 
 #endif //ZTG_UTILS_H

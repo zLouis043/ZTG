@@ -30,8 +30,13 @@ SOFTWARE.
 #include <stdarg.h>
 #include <stdbool.h>
 #include <time.h>
-#include <locale.h>
+//#include <locale.h>
 #include <signal.h>
+/*#include <io.h>
+#include <fcntl.h>*/
+
+#define UNICODE
+#define _UNICODE
 
 #include "ZTG_Core.h"
 #include "ZTG_Defines.h"
@@ -55,6 +60,13 @@ void ztg_end_iteration(){
 
 }
 
+#ifdef _WIN32 // #A
+#include <io.h> // #B
+#include <fcntl.h> // #C
+#else // #D
+#include <locale> // #E
+#endif
+
 void ztg_init_with_file_and_line(char * filename, size_t line, char * title, short width, short height, short resolution_x, short resolution_y) {
 
     ztg_throw_error_if_not_with_action((width <= BUFF_MAX_WIDTH && height <= BUFF_MAX_HEIGHT),
@@ -65,8 +77,24 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
                                        BUFF_MAX_WIDTH, BUFF_MAX_HEIGHT,
                                        width, height);
 
-    char *locale;
-    locale = setlocale(LC_ALL, "");
+    /*char *locale;
+    locale = setlocale(LC_ALL, "");*/
+
+    //_setmode(_fileno(stdout), _O_U16TEXT);
+
+    /*char* a = setlocale(LC_ALL, "English");
+    lollocale(a);*/
+
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
+    /*#ifdef _WIN32 // #A
+    _setmode(_fileno(stdout), _O_U16TEXT); // #F
+    #else // #D
+        std::locale::global(std::locale("")); // #H
+        std::wcout.imbue(std::locale()); // #I
+    #endif*/
+
     window.is_running = true;
     window.iteration_number = 0;
     window.buffer_switch = true;
@@ -193,7 +221,7 @@ void ztg_swap_buffer(){
     /*!
      * Write the drawn buffer to the current handle buffer
      */
-    WriteConsoleOutput(
+    WriteConsoleOutputW(
             window.handles[3], //! Current handle buffer
             window.buffer,        //! Buffer drawn
             window.buff_size_ad_coord,     //! Size of the console

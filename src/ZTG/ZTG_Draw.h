@@ -45,6 +45,7 @@ ZTGAPI void ztg_draw_pixel(size_t x, size_t y, int color);
 ZTGAPI void ztg_draw_string(char * str, size_t x, size_t y, int foreground_color, int background_color);
 ZTGAPI void ztg_render_char(struct bitmap_font font, char c, size_t x, size_t y, int color);
 ZTGAPI void ztg_render_string(struct bitmap_font font, char * string, size_t x, size_t y, int color);
+void ztg_draw_sprite(Sprite * sprite, int x, int y);
 ZTGAPI void ztg_draw_line(int x1, int y1, int x2, int y2, int color);
 ZTGAPI void ztg_draw_horizontal_line_by_width(int sx, int ex, int ny, int color);
 ZTGAPI void ztg_draw_rect(int x1, int y1, int x2, int y2, int color);

@@ -28,6 +28,7 @@ SOFTWARE.
 #include <stdint.h>
 #include <string.h>
 
+#include "ZTG_Utils.h"
 #include "ZTG_Draw.h"
 #include "ZTG_Defines.h"
 #include "ZTG_Core.h"
@@ -106,19 +107,9 @@ void ztg_draw_char(short c, size_t x, size_t y, int foreground_color, int backgr
 }
 
 void ztg_draw_pixel(size_t x, size_t y, int color){
-
-    char shade = NORMAL;
-    if(color >> 4 & 1){
-        shade = LIGHT;
-    }else if(color >> 5 & 1){
-        shade = NORMAL;
-    }else if(color >> 6 & 1){
-        shade = DARK;
-    }else if(color >> 7 & 1){
-        shade = VERY_DARK;
-    }else{
-        shade = ' ';
-    }
+    
+    short shade = window.is_pixel_look_enabled ? (color >> 3 & 1 ? 0x2588 : 0x2593) : ' ';
+    int color_conversion =  window.is_pixel_look_enabled ? color : color << 4;
 
     if(ztg_mov_to(x, y)){
         if(window.is_mask_enabled){
@@ -129,11 +120,11 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                                window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
+                                window.buffer[window.curr_idx].Attributes = color_conversion;/*color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);*/
                             }
                         } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                            window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
+                            window.buffer[window.curr_idx].Attributes = color_conversion;
                         }
                     }break;
                 }
@@ -143,11 +134,11 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                                window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
+                                window.buffer[window.curr_idx].Attributes = color_conversion;
                             }
                         } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                            window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
+                            window.buffer[window.curr_idx].Attributes = color_conversion;
                         }
                     }break;
                 }
@@ -157,11 +148,11 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                 if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                     window.curr_y < window.height) {
                     window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                    window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);
+                    window.buffer[window.curr_idx].Attributes = color_conversion;
                 }
             }else{
                 window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                window.buffer[window.curr_idx].Attributes = color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);;
+                window.buffer[window.curr_idx].Attributes = color_conversion;
             }
         }
     }
@@ -194,6 +185,16 @@ void ztg_render_string(struct bitmap_font font, char * string, size_t x, size_t 
 
     for(size_t i = 0; i < str_len; i++){
         ztg_render_char(font, string[i],  x + (8 * i), y, color);
+    }
+}
+
+void ztg_draw_sprite(Sprite * sprite, int x, int y){
+    for(size_t i = 0; i < sprite->width; i++){
+        for(size_t j = 0; j < sprite->height; j++){
+            ztg_draw_pixel(x + i, y + j, 
+            ztg_get_value_from_color(sprite->pixels[get_index_from_2d(i, j, sprite->width)])
+            );
+        }
     }
 }
 
@@ -746,5 +747,5 @@ void ztg_show_fps(int x, int y, int color){
     char fps[256];
     snprintf(fps, 256, "%3.2ffps", 1000 / window.elapsed_time);
     ztg_render_string(font_ib8x8u, s, x, y, color);
-    ztg_render_string(font_ib8x8u, fps, x + (font_ib8x8u.Width * 6), y, C_LIGHT_GRAY);
+    ztg_render_string(font_ib8x8u, fps, x + (font_ib8x8u.Width * 6), y, C_GRAY);
 }
