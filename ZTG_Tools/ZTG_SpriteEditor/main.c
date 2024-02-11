@@ -43,6 +43,8 @@ int main(int argc, char ** argv){
     /*Start the console clock*/
     ztg_start_clock();
 
+    Start();
+
     run();
 
     ztg_close();

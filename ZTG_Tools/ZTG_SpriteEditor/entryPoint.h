@@ -6,6 +6,7 @@
 extern char ** save_file_name;
 extern char ** load_file_name;
 
+void Start();
 void Update(float elapsedTime);
 void HandleInputs();
 

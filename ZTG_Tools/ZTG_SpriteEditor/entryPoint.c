@@ -288,7 +288,7 @@ static bool paint_mode_button(){
     }
 }
 
-static bool change_canvas_size_button(){
+static bool change_canvas_size_8x8_button(){
 
     ztg_render_string(font_ib8x8u, "Canvas Size: ", g_tools_buttons_start_x + g_tools_buttons_width + 200, g_grid.y + 5, C_WHITE);
 
@@ -306,9 +306,28 @@ static bool change_canvas_size_button(){
             .color_pressed = C_LIGHT_BLUE
     };
 
-    char * label= g_is_8x8_grid ? " 8x8" : "16x16";
+    return ztg_button(canvas_size_b, " 8x8", 5, 5, C_WHITE);
+}
 
-    return ztg_button(canvas_size_b, label, 5, 5, C_WHITE);
+static bool change_canvas_size_16x16_button(){
+
+    ztg_render_string(font_ib8x8u, "Canvas Size: ", g_tools_buttons_start_x + g_tools_buttons_width + 200, g_grid.y + 5, C_WHITE);
+
+    Rect canvas_size_r = {
+            .p1.x = g_tools_buttons_start_x + + g_tools_buttons_width + 350 + 5,
+            .p1.y = g_grid.y,
+            .p2.x = g_tools_buttons_start_x + g_tools_buttons_width + 350 + g_tools_buttons_width,
+            .p2.y = g_grid.y + 20
+    };
+
+    Button canvas_size_b = {
+            .bounds = canvas_size_r,
+            .color_base = C_BLACK ,
+            .color_hover = C_DARK_GRAY,
+            .color_pressed = C_LIGHT_BLUE
+    };
+
+    return ztg_button(canvas_size_b, "16x16", 2, 5, C_WHITE);
 }
 
 static bool set_name_button(){
@@ -330,9 +349,9 @@ static bool set_name_button(){
     };
 
     if(g_default_sprite_name){
-        return ztg_button(set_name_b, *save_file_name, 5, 5, C_WHITE);
+        return ztg_button(set_name_b, *save_file_name, 5, 7, C_WHITE);
     }else {
-        return ztg_button(set_name_b, g_file_name, 5, 5, C_WHITE);
+        return ztg_button(set_name_b, g_file_name, 5, 7, C_WHITE);
     }
 }
 
@@ -500,6 +519,13 @@ static void save_before_exit(){
     }
 }
 
+void Start(){
+   if(!g_is_grid_initialized){
+        grid_init(g_cell_width ,g_cell_height);
+        g_is_grid_initialized = true;
+    } 
+}
+
 void Update(float elapsedTime){
 
     ztg_render_string(font_ib8x8u, "COLORS: ", 5, 5, C_WHITE);
@@ -515,6 +541,11 @@ void Update(float elapsedTime){
         g_is_grid_initialized = true;
     }
 
+    if(g_is_size_updated){
+        grid_init(g_cell_width ,g_cell_height);
+        g_is_size_updated = false;
+    }
+
     erase_mode_button();
     fill_mode_button();
     paint_mode_button();
@@ -523,12 +554,29 @@ void Update(float elapsedTime){
         g_is_grid_initialized = false;
     }
 
-    if(change_canvas_size_button()){
-        g_is_8x8_grid = !g_is_8x8_grid;
-        g_grid.cells_count_x = g_is_8x8_grid ? 8 : 16;
-        g_grid.cells_count_y = g_is_8x8_grid ? 8 : 16;
-        g_cell_width = g_is_8x8_grid ? 20 : 10;
-        g_cell_height = g_is_8x8_grid ? 20 : 10;
+
+    if(change_canvas_size_8x8_button()){
+        g_is_8x8_grid = true;
+        g_grid.cells_count_x = 8;
+        g_grid.cells_count_y = 8;
+        g_cell_width = 20;
+        g_cell_height = 20;
+        g_is_grid_initialized = false;
+        g_is_size_updated = true;
+
+        for(size_t i = 0; i < 16; i++){
+            for(size_t j = 0; j < 16; j++){
+                size_t idx = get_index_from_2d(j, i, g_max_cells);
+                g_cell_states[idx].curr_color = g_grid.cells[idx].curr_color;
+                g_cell_states[idx].is_empty = g_grid.cells[idx].is_empty;
+            }
+        }
+    }else if(change_canvas_size_16x16_button()){
+        g_is_8x8_grid = false;
+        g_grid.cells_count_x = 16;
+        g_grid.cells_count_y = 16;
+        g_cell_width = 10;
+        g_cell_height = 10;
         g_is_grid_initialized = false;
         g_is_size_updated = true;
 
