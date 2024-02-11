@@ -27,6 +27,8 @@ void run(){
         
         /*End the frame iteration*/
         ztg_end_iteration();
+
+        ztg_set_console_title(ztg_format_text("Sprite Editor | FPS: %3.12f", (1.0f / (window.elapsed_time)) * 1000.0f));
     }
 }
 

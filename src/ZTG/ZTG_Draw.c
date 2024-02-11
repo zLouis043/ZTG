@@ -742,10 +742,6 @@ void ztg_clear(int color){
 }
 
 void ztg_show_fps(int x, int y, int color){
-    char s[256];
-    snprintf(s, 256, "FPS : ");
-    char fps[256];
-    snprintf(fps, 256, "%3.2ffps", 1000 / window.elapsed_time);
-    ztg_render_string(font_ib8x8u, s, x, y, color);
-    ztg_render_string(font_ib8x8u, fps, x + (font_ib8x8u.Width * 6), y, C_GRAY);
+    ztg_render_string(font_ib8x8u, "FPS:", x, y, color);
+    ztg_render_string(font_ib8x8u, ztg_format_text("%3.2f fps", (1.0f / (window.elapsed_time)) * 1000.0f), x + (font_ib8x8u.Width * 6), y, C_GRAY);
 }

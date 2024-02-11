@@ -30,10 +30,7 @@ SOFTWARE.
 #include <stdarg.h>
 #include <stdbool.h>
 #include <time.h>
-//#include <locale.h>
 #include <signal.h>
-/*#include <io.h>
-#include <fcntl.h>*/
 
 #define UNICODE
 #define _UNICODE
@@ -56,16 +53,9 @@ void ztg_start_iteration(){
 void ztg_end_iteration(){
     window.time_point_2 = clock();
     window.elapsed_time = ((float)(window.time_point_2 - window.time_point_1) / CLOCKS_PER_SEC) * 1000.0f;
-    window.FPS = (int)(1.0f / window.elapsed_time);
+    window.FPS = (int)(1.0f / (window.elapsed_time / 1000.f));
 
 }
-
-#ifdef _WIN32 // #A
-#include <io.h> // #B
-#include <fcntl.h> // #C
-#else // #D
-#include <locale> // #E
-#endif
 
 void ztg_init_with_file_and_line(char * filename, size_t line, char * title, short width, short height, short resolution_x, short resolution_y) {
 
@@ -77,24 +67,9 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
                                        BUFF_MAX_WIDTH, BUFF_MAX_HEIGHT,
                                        width, height);
 
-    /*char *locale;
-    locale = setlocale(LC_ALL, "");*/
-
-    //_setmode(_fileno(stdout), _O_U16TEXT);
-
-    /*char* a = setlocale(LC_ALL, "English");
-    lollocale(a);*/
 
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
-
-    /*#ifdef _WIN32 // #A
-    _setmode(_fileno(stdout), _O_U16TEXT); // #F
-    #else // #D
-        std::locale::global(std::locale("")); // #H
-        std::wcout.imbue(std::locale()); // #I
-    #endif*/
-
     window.is_running = true;
     window.iteration_number = 0;
     window.buffer_switch = true;

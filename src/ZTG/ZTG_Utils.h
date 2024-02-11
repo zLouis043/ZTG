@@ -31,6 +31,7 @@ SOFTWARE.
 #include "ZTG_Core.h"
 
 extern Window window;
+
 /*!
  * @brief Get the console width
  * @return The console width
