@@ -5,7 +5,10 @@ mkdir bin
 cd bin
 cmake .. -G "MinGW Makefiles"
 make
-cd ..
-cd ..
-cd .. 
-cd .. 
+cd ../..
+cd ZTG_Snake
+mkdir bin
+cd bin
+cmake .. -G "MinGW Makefiles"
+make
+cd ../../..

@@ -162,8 +162,19 @@ Color ztg_get_color_from_value(int color){
     };
 }
 
+iVec2 ztg_measure_text(short font_size_x, short font_size_y, char * text){
+    return (iVec2){
+        .x = font_size_x * strlen(text),
+        .y = font_size_y
+    };
+}
+
+
 Sprite * ztg_create_sprite_from_file(const char * filename){
 
+    //UNUSABLE RIGHT NOW 
+
+    #if 0
     FILE *fp; //fopen(filename, "r");
     fopen_s(&fp, filename, "r");
 
@@ -186,4 +197,5 @@ Sprite * ztg_create_sprite_from_file(const char * filename){
     }
     fclose(fp);
     return sprite;
+    #endif 
 }

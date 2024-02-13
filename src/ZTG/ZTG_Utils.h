@@ -197,6 +197,17 @@ ZTGAPI int ztg_get_value_from_color(Color color);
  */
 ZTGAPI Color ztg_get_color_from_value(int color);
 
+
+/*!
+ * @brief Measure the size of a text based on the font size
+ * @param font_size_x TYPE : (short) \n The font size on the x axis
+ * @param font_size_y TYPE : (short) \n The font size on the y axis
+ * @param text TYPE : (char * ) \n The text to measure
+ * @return TYPE : (iVec2) \n The int vector 2 containing the width and height of the text
+ */
+iVec2 ztg_measure_text(short font_size_x, short font_size_y, char * text);
+
+
 ZTGAPI Sprite * ztg_create_sprite_from_file(const char * filename);
 
 #endif //ZTG_UTILS_H

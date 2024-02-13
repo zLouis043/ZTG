@@ -20,47 +20,40 @@ typedef struct grid{
     Cell cells[256];
 }Grid;
 
-int g_color_selected = 15;
-int g_mouse_color = C_BLACK ;
-int g_cell_width = 20;
-int g_cell_height = 20;
-int g_max_cells = 16;
+int g_color_selected;
+int g_mouse_color;
+int g_cell_width;
+int g_cell_height;
+int g_max_cells;
 Cell g_cell_states[256];
-Grid g_grid = {
-        .x = 60,
-        .y = 50,
-        .padding_x = 5,
-        .padding_y = 5,
-        .cells_count_x = 8,
-        .cells_count_y = 8
-};
+Grid g_grid;
 
-bool g_is_grid_initialized = false;
-bool g_is_8x8_grid = true;
-bool g_is_size_updated = false;
-bool g_fill_mode = false;
-bool g_is_file_name_typing = false;
-bool g_default_sprite_name = true;
+bool g_is_grid_initialized;
+bool g_is_8x8_grid;
+bool g_is_size_updated;
+bool g_fill_mode;
+bool g_is_file_name_typing;
+bool g_default_sprite_name;
 
 char g_file_name[256];
-int g_file_name_cur_idx = 0;
+int g_file_name_cur_idx;
 
-int g_tools_buttons_offset = 5;
-int g_tools_buttons_width = 50;
-int g_tools_buttons_height = 20;
-int g_tools_buttons_start_x = 10;
-int g_tools_buttons_start_y = 20;
-int g_tools_buttons_idx = 0;
+int g_tools_buttons_offset;
+int g_tools_buttons_width;
+int g_tools_buttons_height;
+int g_tools_buttons_start_x;
+int g_tools_buttons_start_y;
+int g_tools_buttons_idx;
 
-int g_save_pop_up_start_y = 237;
-int g_save_pop_up_end_y = 217;
-int g_save_time_pop_up = 100;
-int g_save_timer_pop_up = 0;
-int g_save_pop_up_width = 114;
-int g_save_pop_up_height = 20;
-int g_save_pop_up_x = 361;
-int g_save_pop_up_y = 217;
-bool g_saved = false;
+int g_save_pop_up_start_y;
+int g_save_pop_up_end_y;
+int g_save_time_pop_up ;
+int g_save_timer_pop_up;
+int g_save_pop_up_width;
+int g_save_pop_up_height;
+int g_save_pop_up_x;
+int g_save_pop_up_y;
+bool g_saved;
 
 bool g_has_changes = true;
 
@@ -206,6 +199,9 @@ static void grid_draw(){
         }
     }
 }
+
+static void grid_update(){}
+
 
 static void erase_mode_button(){
 
@@ -534,6 +530,48 @@ void Start(){
 
     //sprite = ztg_create_sprite_from_file("./Sprites/NOI.zsprt");
 
+    g_color_selected = 15;
+    g_mouse_color = C_BLACK ;
+    g_cell_width = 20;
+    g_cell_height = 20;
+    g_max_cells = 16;
+
+    g_grid.x = 60;
+    g_grid.y = 50;
+    g_grid.padding_x = 5;
+    g_grid.padding_y = 5;
+    g_grid.cells_count_x = 8;
+    g_grid.cells_count_y = 8;
+
+
+    g_is_grid_initialized = false;
+    g_is_8x8_grid = true;
+    g_is_size_updated = false;
+    g_fill_mode = false;
+    g_is_file_name_typing = false;
+    g_default_sprite_name = true;
+
+    g_file_name_cur_idx = 0;
+
+    g_tools_buttons_offset = 5;
+    g_tools_buttons_width = 50;
+    g_tools_buttons_height = 20;
+    g_tools_buttons_start_x = 10;
+    g_tools_buttons_start_y = 20;
+    g_tools_buttons_idx = 0;
+
+    g_save_pop_up_start_y = 237;
+    g_save_pop_up_end_y = 217;
+    g_save_time_pop_up = 100;
+    g_save_timer_pop_up = 0;
+    g_save_pop_up_width = 114;
+    g_save_pop_up_height = 20;
+    g_save_pop_up_x = 361;
+    g_save_pop_up_y = 217;
+    g_saved = false;
+
+    g_has_changes = true;
+
     if(!g_is_grid_initialized){
         grid_init(g_cell_width ,g_cell_height);
         g_is_grid_initialized = true;
@@ -577,7 +615,6 @@ void Update(float elapsedTime){
         g_grid.cells_count_y = 8;
         g_cell_width = 20;
         g_cell_height = 20;
-        g_is_grid_initialized = false;
         g_is_size_updated = true;
 
         for(size_t i = 0; i < 16; i++){
@@ -593,7 +630,6 @@ void Update(float elapsedTime){
         g_grid.cells_count_y = 16;
         g_cell_width = 10;
         g_cell_height = 10;
-        g_is_grid_initialized = false;
         g_is_size_updated = true;
 
         for(size_t i = 0; i < 16; i++){

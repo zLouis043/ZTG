@@ -2,7 +2,10 @@
     "files.associations": {
         "stdio.h": "c",
         "ztg.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "fonts.h": "c",
+        "cstdlib": "c",
+        "cmath": "c"
     },
     "cSpell.words": [
         "ZTGAPI"

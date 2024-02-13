@@ -120,7 +120,7 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
                                 window.buffer[window.curr_idx].Char.UnicodeChar = shade;
-                                window.buffer[window.curr_idx].Attributes = color_conversion;/*color << 4 | (window.is_pixel_look_enabled ? (color | FOREGROUND_INTENSITY) : 0);*/
+                                window.buffer[window.curr_idx].Attributes = color_conversion;
                             }
                         } else {
                             window.buffer[window.curr_idx].Char.UnicodeChar = shade;
@@ -156,15 +156,17 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
             }
         }
     }
+
 }
 
 void ztg_draw_string(char * str, size_t x, size_t y, int foreground_color, int background_color){
     size_t str_len = strlen(str);
-    short * wstring;
+    short * wstring = (short*)malloc(str_len * sizeof(short));
     memcpy(wstring, str, str_len);
     for(size_t i = 0; i < str_len; i++){
         ztg_draw_char(wstring[i], x+i, y, foreground_color, background_color);
     }
+    free(wstring);
 }
 
 void ztg_render_char(struct bitmap_font font, char c, size_t x, size_t y, int color){
@@ -739,6 +741,7 @@ void ztg_clear(int color){
     for(size_t idx = 0; idx < window.width * window.height; idx++){
         window.buffer[idx].Attributes = color << 4;
     }
+
 }
 
 void ztg_show_fps(int x, int y, int color){

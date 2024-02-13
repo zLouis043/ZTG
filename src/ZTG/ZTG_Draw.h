@@ -76,6 +76,7 @@ ZTGAPI void ztg_draw_circle_Vec(iVec2 v, int r, int color);
 ZTGAPI void ztg_draw_filled_circle_Vec(iVec2 v, int r, int color);
 ZTGAPI void ztg_draw_ellipse_Vec(iVec2 v1, iVec2 v2, int color);
 ZTGAPI void ztg_draw_filled_ellipse_Vec(iVec2 v1, iVec2 v2, int color);
+ZTGAPI void ztg_draw_thick_line_Vec(iVec2 v1, iVec2 v2, int thickness, int color);
 ZTGAPI void ztg_draw_thick_rect_Vec(iVec2 v1, iVec2 v2, int thickness, int color);
 ZTGAPI void ztg_draw_thick_triangle_Vec(iVec2 v1, iVec2 v2, iVec2 v3, int thickness, int color);
 ZTGAPI void ztg_draw_thick_circle_Vec(iVec2 v, int r, int thickness, int color);
