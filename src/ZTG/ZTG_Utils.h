@@ -207,7 +207,11 @@ ZTGAPI Color ztg_get_color_from_value(int color);
  */
 iVec2 ztg_measure_text(short font_size_x, short font_size_y, char * text);
 
-
+/*!
+ * @brief Load a sprite from a file .zsprt That can be created by the ZTG_SpriteEditor and then return the pointer to it
+ * @param filename TYPE : (const char * ) \n The name of the file to load as a sprite
+ * @return TYPE : (Sprite *) \n The pointer to the sprite
+ */
 ZTGAPI Sprite * ztg_create_sprite_from_file(const char * filename);
 
 #endif //ZTG_UTILS_H

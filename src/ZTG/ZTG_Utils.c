@@ -171,11 +171,7 @@ iVec2 ztg_measure_text(short font_size_x, short font_size_y, char * text){
 
 Sprite * ztg_create_sprite_from_file(const char * filename){
 
-    //UNUSABLE RIGHT NOW 
-
-    #if 0
-    FILE *fp; //fopen(filename, "r");
-    fopen_s(&fp, filename, "r");
+    FILE *fp = fopen(filename, "r");
 
     if(!fp){
         fprintf(stderr, "Couldn't open sprite file %s", filename);
@@ -186,15 +182,31 @@ Sprite * ztg_create_sprite_from_file(const char * filename){
     Sprite * sprite = (Sprite *)malloc(sizeof(Sprite));
 
     int curr_color = 0;
-    fscanf(fp, "%d %d", sprite->width, sprite->height);
-    
-    for(size_t i = 0; i < sprite->width; i++){
-        for(size_t j = 0 ; j < sprite->height; j++){
+
+    char sprite_width[3];
+    memset(sprite_width, 0, sizeof(sprite_width));
+    char sprite_height[3];
+    memset(sprite_height, 0, sizeof(sprite_width));
+    char sprite_i_color[3];
+    memset(sprite_i_color, 0, sizeof(sprite_width));
+
+    fread(sprite_width, sizeof(int), 1, fp);
+    sprite->width = atoi(sprite_width);
+
+    sprite->height = sprite->width;
+
+    sprite->pixels = (Color*)malloc(sprite->width * sprite->height * sizeof(Color));
+
+    for(size_t i = 0; i < sprite->width * sprite->height; i++){
             fscanf(fp, "%d", &curr_color);
-            sprite->pixels[get_index_from_2d(i, j, sprite->width)] = ztg_get_color_from_value(curr_color);
-        }
+            if(curr_color != 17){ 
+                sprite->pixels[i] = ztg_get_color_from_value(curr_color);
+            }else{
+                sprite->pixels[i] = ztg_get_color_from_value(window.background_color);
+            }
     }
+
     fclose(fp);
+
     return sprite;
-    #endif 
 }

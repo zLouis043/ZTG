@@ -183,6 +183,12 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     SetCurrentConsoleFontEx(window.handles_out[2],false, &cfi);
     SetConsoleMode(window.handles_out[2], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
 
+    SetConsoleWindowInfo(window.handles_out[3], TRUE, &m_rectWindow);
+    SetConsoleScreenBufferSize(window.handles_out[3], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles_out[3], TRUE, &window.console_write_rect);
+    SetCurrentConsoleFontEx(window.handles_out[3],false, &cfi);
+    SetConsoleMode(window.handles_out[3], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
+
     /*!
      * Set the modes for the Inputs Handle
      */

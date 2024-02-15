@@ -404,19 +404,24 @@ static void save(){
         exit(1);
     }
 
-    fprintf(fp, "%d %d\n", g_grid.cells_count_x, g_grid.cells_count_y);
+    fprintf(fp, "%d %d ", g_grid.cells_count_x, g_grid.cells_count_y);
 
+    /*for(size_t i = 0; i < g_grid.cells_count_y * g_grid.cells_count_x; i++){
+            if(g_grid.cells[i].is_empty){
+                fprintf(fp, "17 ");
+            }else {
+                fprintf(fp, "%d ", g_grid.cells[i].curr_color);
+            }
+    }*/
     for(size_t i = 0; i < g_grid.cells_count_y; i++){
         for(size_t j = 0; j < g_grid.cells_count_x; j++){
-            int idx = get_index_from_2d(i, j, 16);
-            if(g_grid.cells[idx].is_empty){
-                fprintf(fp, "17");
+            size_t idx = get_index_from_2d(j, i, 16);
+            if(g_grid.cells[i].is_empty){
+                fprintf(fp, "17 ");
             }else {
-                fprintf(fp, "%d", g_grid.cells[idx].curr_color);
+                fprintf(fp, "%d ", g_grid.cells[i].curr_color);
             }
-            fprintf(fp, " ");
         }
-        fprintf(fp, "\n");
     }
 
     fclose(fp);
@@ -528,8 +533,6 @@ static void save_before_exit(){
 
 void Start(){
 
-    //sprite = ztg_create_sprite_from_file("./Sprites/NOI.zsprt");
-
     g_color_selected = 15;
     g_mouse_color = C_BLACK ;
     g_cell_width = 20;
@@ -579,8 +582,6 @@ void Start(){
 }
 
 void Update(float elapsedTime){
-
-    //ztg_draw_sprite(sprite, 10, 10);
 
     ztg_render_string(font_ib8x8u, "COLORS: ", 5, 5, C_WHITE);
 
