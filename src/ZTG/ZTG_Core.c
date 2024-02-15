@@ -78,7 +78,6 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     window.is_pixel_look_enabled = false;
     window.BUFFER_MAX_IDX = width * height - 1;
     window.wants_to_quit = false;
-
     /*!
      * Get the std inputs handle
      */
@@ -87,12 +86,12 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     /*!
      * Get the std output handle
      */
-    window.handles[0] = GetStdHandle(STD_OUTPUT_HANDLE);
+    window.handles_out[0] = GetStdHandle(STD_OUTPUT_HANDLE);
 
     /*!
      * Create the first Console Screen Buffer used in the swap buffer
      */
-    window.handles[1] = CreateConsoleScreenBuffer(
+    window.handles_out[1] = CreateConsoleScreenBuffer(
             GENERIC_WRITE,
             0,
             NULL,
@@ -102,7 +101,7 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     /*!
      * Create the second Console Screen Buffer used in the swap buffer
      */
-    window.handles[2] = CreateConsoleScreenBuffer(
+    window.handles_out[2] = CreateConsoleScreenBuffer(
             GENERIC_WRITE,
             0,
             NULL,
@@ -119,14 +118,14 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
         exit(EXIT_FAILURE);
     }
 
-    if(window.handles[1] == INVALID_HANDLE_VALUE){
+    if(window.handles_out[1] == INVALID_HANDLE_VALUE){
         system("cls");
         printf("Invalid handle n.1\n");
         system("pause");
         exit(EXIT_FAILURE);
     }
 
-    if(window.handles[3] == INVALID_HANDLE_VALUE){
+    if(window.handles_out[3] == INVALID_HANDLE_VALUE){
         system("cls");
         printf("Invalid handle n.3\n");
         system("pause");
@@ -166,22 +165,23 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     SetConsoleTitle(window.title);
     SMALL_RECT m_rectWindow = { 0, 0, 1, 1 };
 
-    SetConsoleWindowInfo(window.handles[0], TRUE, &m_rectWindow);
-    SetConsoleScreenBufferSize(window.handles[0], window.buff_size_ad_coord);
-    SetConsoleWindowInfo(window.handles[0], TRUE, &window.console_write_rect);
-    SetCurrentConsoleFontEx(window.handles[0],false, &cfi);
-    SetConsoleMode(window.handles[0], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
-    SetConsoleWindowInfo(window.handles[1], TRUE, &m_rectWindow);
-    SetConsoleScreenBufferSize(window.handles[1], window.buff_size_ad_coord);
-    SetConsoleWindowInfo(window.handles[1], TRUE, &window.console_write_rect);
-    SetCurrentConsoleFontEx(window.handles[1],false, &cfi);
-    SetConsoleMode(window.handles[1], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
+    SetConsoleWindowInfo(window.handles_out[0], TRUE, &m_rectWindow);
+    SetConsoleScreenBufferSize(window.handles_out[0], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles_out[0], TRUE, &window.console_write_rect);
+    SetCurrentConsoleFontEx(window.handles_out[0],false, &cfi);
+    SetConsoleMode(window.handles_out[0], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
 
-    SetConsoleWindowInfo(window.handles[2], TRUE, &m_rectWindow);
-    SetConsoleScreenBufferSize(window.handles[2], window.buff_size_ad_coord);
-    SetConsoleWindowInfo(window.handles[2], TRUE, &window.console_write_rect);
-    SetCurrentConsoleFontEx(window.handles[2],false, &cfi);
-    SetConsoleMode(window.handles[2], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
+    SetConsoleWindowInfo(window.handles_out[1], TRUE, &m_rectWindow);
+    SetConsoleScreenBufferSize(window.handles_out[1], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles_out[1], TRUE, &window.console_write_rect);
+    SetCurrentConsoleFontEx(window.handles_out[1],false, &cfi);
+    SetConsoleMode(window.handles_out[1], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
+
+    SetConsoleWindowInfo(window.handles_out[2], TRUE, &m_rectWindow);
+    SetConsoleScreenBufferSize(window.handles_out[2], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles_out[2], TRUE, &window.console_write_rect);
+    SetCurrentConsoleFontEx(window.handles_out[2],false, &cfi);
+    SetConsoleMode(window.handles_out[2], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
 
     /*!
      * Set the modes for the Inputs Handle
@@ -196,19 +196,19 @@ void ztg_swap_buffer(){
     /*!
      *  Set the current handle buffer to flush
      */
-    //window.handles[3] = window.buffer_switch ? window.handles[1] : window.handles[2];
+    window.handles_out[3] = window.buffer_switch ? window.handles_out[1] : window.handles_out[2];
 
     /*!
      * Write the drawn buffer to the current handle buffer
      */
     WriteConsoleOutputW(
-            window.handles[0], //! Current handle buffer
+            window.handles_out[3], //! Current handle buffer
             window.buffer,        //! Buffer drawn
             window.buff_size_ad_coord,     //! Size of the console
             window.window_coord_as_coord,    //! Coordinates of the console
             &window.console_write_rect);   //! Rectangle defined of the console
 
-    if (!SetConsoleActiveScreenBuffer(window.handles[0])) { //! Set the current handle buffer as the active console buffer
+    if (!SetConsoleActiveScreenBuffer(window.handles_out[3])) { //! Set the current handle buffer as the active console buffer
         exit(EXIT_FAILURE); //! Exit if fail
     }
 
@@ -292,8 +292,8 @@ void ztg_io(){
 
             }break;
             case WINDOW_BUFFER_SIZE_EVENT:
-                SetConsoleScreenBufferSize(window.handles[0], window.buff_size_ad_coord);
-                SetConsoleWindowInfo(window.handles[0], TRUE, &window.console_write_rect);
+                SetConsoleScreenBufferSize(window.handles_out[3], window.buff_size_ad_coord);
+                SetConsoleWindowInfo(window.handles_out[3], TRUE, &window.console_write_rect);
                 break;
 
         }
@@ -304,7 +304,7 @@ void ztg_io(){
  * @brief Close the console and set it to its original handle 
  */
 void ztg_close(){
-    SetConsoleActiveScreenBuffer(window.handles[0]);
+    SetConsoleActiveScreenBuffer(window.handles_out[0]);
     free(window.buffer);
 }
 
@@ -320,14 +320,6 @@ void ztg_def_on_handle_inputs(void){
 }
 
 void ztg_def_on_update(float elapsedTime){
-
-        ztg_start_iteration();
-
-        /*Get the inputs from the user*/
-        //ztg_io();
-        
-        /*End the frame iteration*/
-        ztg_end_iteration();
 
 }
 
@@ -375,12 +367,14 @@ DWORD WINAPI ztg_game_thread(void* data){
 
             ztg_io();
             /*Handle the inputs received*/
-            ztg_on_handle_inputs_callback_fun();
 
+            ztg_on_handle_inputs_callback_fun();
+        
             /*Clear the background*/
             ztg_clear(C_BLACK);
             /*Update the frame passing the elapsed time*/
             ztg_on_update_callback_fun(window.elapsed_time);
+
             /*Swap the console buffers*/
             ztg_swap_buffer();
 

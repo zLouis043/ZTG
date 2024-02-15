@@ -94,7 +94,7 @@ struct ztg_window{
     size_t curr_x;
     size_t curr_y;
     size_t curr_idx;
-    HANDLE handles[4];
+    HANDLE handles_out[4];
     HANDLE handle_in;
     COORD buff_size_ad_coord;
     Rect bounds;
@@ -177,12 +177,34 @@ ZTGAPI void ztg_io();
  */
 ZTGAPI void ztg_close();
 
+/*!
+ * @brief The Function that will be called when the program starts
+ */
 typedef void (*ztg_on_init_callback)(void);
+
+/*!
+ * @brief The Function that will to update the frame of the screen
+ */
 typedef void (*ztg_on_update_callback)(float elapsedTime);
+
+/*!
+ * @brief The Function that will handle the inputs 
+ */
 typedef void (*ztg_on_handle_inputs_callback)(void);
+
+/*!
+ * @brief The Function that will be called when the program ends
+ */
 typedef void (*ztg_on_destroy_callback)(void);
 
-void ztg_setup_callbacks(ztg_on_init_callback on_init, ztg_on_handle_inputs_callback on_handle_input,ztg_on_update_callback on_update, ztg_on_destroy_callback on_destroy);
-void ztg_run();
+/*!
+ * @brief Sets up all the functions required to run correctly the program 
+ */
+ZTGAPI void ztg_setup_callbacks(ztg_on_init_callback on_init, ztg_on_handle_inputs_callback on_handle_input,ztg_on_update_callback on_update, ztg_on_destroy_callback on_destroy);
+
+/*!
+ * @brief Run the program 
+ */
+ZTGAPI void ztg_run();
 
 #endif //ZTG_CORE_H

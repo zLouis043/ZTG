@@ -119,6 +119,8 @@ void ztg_draw_pixel(size_t x, size_t y, int color){
                         if (!window.is_wrap_around_enabled) {
                             if (window.curr_x >= 0 && window.curr_x < window.width && window.curr_y >= 0 &&
                                 window.curr_y < window.height) {
+                                //window.buffer[window.curr_idx].Char.UnicodeChar = shade;
+                                //window.buffer[window.curr_idx].Attributes = color_conversion;
                                 window.buffer[window.curr_idx].Char.UnicodeChar = shade;
                                 window.buffer[window.curr_idx].Attributes = color_conversion;
                             }

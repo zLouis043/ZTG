@@ -8,6 +8,9 @@ char ** load_file_name;
 
 void run(){
     /*Check if the app is running*/
+
+    Start();
+
     while (ztg_is_app_running()) {
 
         /*Start the frame iteration*/
