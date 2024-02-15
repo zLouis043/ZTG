@@ -78,7 +78,7 @@ int main(void){
     /*HandleInputs function pointer : The function called during the loop of the app to handle the user inputs recieved*/
     /*Update function pointer : The function called during the loop of the appo to update the app frame*/
     /*OnDestroy function pointer : The function called at the end of the app*/
-    ztg_setup_callbacks(Start, HandleInputs, Update, NULL);
+    ztg_setup_callbacks(Start, HandleInputs, Update, OnDestroy);
 
     /*Run the application*/
     ztg_run();
