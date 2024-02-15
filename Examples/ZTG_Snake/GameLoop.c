@@ -91,8 +91,8 @@ static void push_tail(){
 
 static void check_fruit_got(){
     if(!old_graphics){
-        if( fabs(head->pos.x - g_fruit_pos.x + s_dir.x) < 1.f &&
-            fabs(head->pos.y - g_fruit_pos.y + s_dir.y) < 1.f){
+        if( fabs(head->pos.x - g_fruit_pos.x) < 0.5f &&
+            fabs(head->pos.y - g_fruit_pos.y) < 0.5f){
                 g_new_fruit = true;
                 push_tail();
                 push_tail();
@@ -236,18 +236,6 @@ static void snake_draw(){
             track_2 = track_2->next;
 
         }
-
-        ztg_draw_filled_rect(   g_start_grid_coord.x + (head->pos.x * TILE_WIDTH) - 2,
-                                        g_start_grid_coord.y + (head->pos.y * TILE_HEIGHT) - 2,
-                                        g_start_grid_coord.x + TILE_WIDTH + (head->pos.x * TILE_WIDTH) + 2,
-                                        g_start_grid_coord.y + TILE_HEIGHT + (head->pos.y * TILE_HEIGHT) + 2,
-                                        SNAKE_TAIL_COLOR);
-
-        ztg_draw_filled_rect(   g_start_grid_coord.x + (head->pos.x * TILE_WIDTH) + 3,
-                                        g_start_grid_coord.y + (head->pos.y * TILE_HEIGHT) +3,
-                                        g_start_grid_coord.x + TILE_WIDTH + (head->pos.x * TILE_WIDTH) - 3, 
-                                        g_start_grid_coord.y + TILE_HEIGHT + (head->pos.y * TILE_HEIGHT) - 3,
-                                        SNAKE_TOP_COLOR);
     }else{
         while(track != NULL){
 
