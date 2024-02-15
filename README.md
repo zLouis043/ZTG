@@ -62,3 +62,28 @@ int main(void){
 }
 
 ```
+
+or 
+
+```c
+
+#include "ZTG/ZTG.H"
+
+int main(void){
+    /*Init the console with a Title, width, height, the resolution on the x axis and y axis*/
+    ztg_init("Example Window", 480, 250, 2, 2);
+
+    /*Setup every functions needed during the application loop*/
+    /*Start function pointer : The function called at the start of the app*/
+    /*HandleInputs function pointer : The function called during the loop of the app to handle the user inputs recieved*/
+    /*Update function pointer : The function called during the loop of the appo to update the app frame*/
+    /*OnDestroy function pointer : The function called at the end of the app*/
+    ztg_setup_callbacks(Start, HandleInputs, Update, NULL);
+
+    /*Run the application*/
+    ztg_run();
+}
+
+```
+
+Every function pointer can be set to NULL and the engine will handle the function by itself with a default behaviour.
