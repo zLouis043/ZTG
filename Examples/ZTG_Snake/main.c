@@ -1,12 +1,13 @@
 #include "entryPoint.h"
 
+#if 0
 int main(void){
     /*Init the console with a Title, width, height, the resolution on the x axis and y axis*/
     ztg_init(ztg_format_text("%s", "Snake"), 480, 250, 2, 2);
 
     ztg_wrap_around(true);
-
-    Start();
+    
+    /*Start();
 
     /*Start the console clock*/
     ztg_start_clock();
@@ -40,3 +41,18 @@ int main(void){
 
     return 0;
 }
+#else
+
+int main(int argc, char **argv){
+
+    ztg_init(ztg_format_text("%s", "Snake"), 480, 250, 2, 2);
+
+    ztg_setup_callbacks(Start, HandleInputs, Update, NULL);
+
+    ztg_run();
+
+    return 0;
+
+}
+
+#endif 

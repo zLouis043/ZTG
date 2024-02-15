@@ -660,7 +660,6 @@ void Update(float elapsedTime){
 
     iVec2 mouse_pos = ztg_get_mouse_pos();
     ztg_draw_filled_circle(mouse_pos.x, mouse_pos.y, 2, g_mouse_color);
-
 }
 
 static bool is_valid_char(KeyCode kc){

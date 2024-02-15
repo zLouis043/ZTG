@@ -175,7 +175,7 @@ void HandleInputs(){
 }
 
 void Update(float elapsedTime){
-
+    
     if(current_level == inGame){
         if(!GameUpdate(elapsedTime)){
             current_score = snake_reset();
@@ -247,5 +247,5 @@ void Update(float elapsedTime){
         }
     }
 
-    
+    ztg_set_console_title(ztg_format_text("Snake | FPS: %3.12f", (1.0f / (window.elapsed_time)) * 1000.0f));
 }

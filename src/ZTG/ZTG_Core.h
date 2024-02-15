@@ -177,4 +177,12 @@ ZTGAPI void ztg_io();
  */
 ZTGAPI void ztg_close();
 
+typedef void (*ztg_on_init_callback)(void);
+typedef void (*ztg_on_update_callback)(float elapsedTime);
+typedef void (*ztg_on_handle_inputs_callback)(void);
+typedef void (*ztg_on_destroy_callback)(void);
+
+void ztg_setup_callbacks(ztg_on_init_callback on_init, ztg_on_handle_inputs_callback on_handle_input,ztg_on_update_callback on_update, ztg_on_destroy_callback on_destroy);
+void ztg_run();
+
 #endif //ZTG_CORE_H

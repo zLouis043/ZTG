@@ -90,7 +90,6 @@ iVec2 ztg_get_mouse_pos(){
 
 void ztg_shut_app(){
     window.is_running = false;
-    SetConsoleActiveScreenBuffer(window.handles[0]);
 }
 
 bool ztg_is_app_running(){

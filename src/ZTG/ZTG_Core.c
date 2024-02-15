@@ -166,6 +166,11 @@ void ztg_init_with_file_and_line(char * filename, size_t line, char * title, sho
     SetConsoleTitle(window.title);
     SMALL_RECT m_rectWindow = { 0, 0, 1, 1 };
 
+    SetConsoleWindowInfo(window.handles[0], TRUE, &m_rectWindow);
+    SetConsoleScreenBufferSize(window.handles[0], window.buff_size_ad_coord);
+    SetConsoleWindowInfo(window.handles[0], TRUE, &window.console_write_rect);
+    SetCurrentConsoleFontEx(window.handles[0],false, &cfi);
+    SetConsoleMode(window.handles[0], ENABLE_WRAP_AT_EOL_OUTPUT | DISABLE_NEWLINE_AUTO_RETURN);
     SetConsoleWindowInfo(window.handles[1], TRUE, &m_rectWindow);
     SetConsoleScreenBufferSize(window.handles[1], window.buff_size_ad_coord);
     SetConsoleWindowInfo(window.handles[1], TRUE, &window.console_write_rect);
@@ -191,19 +196,19 @@ void ztg_swap_buffer(){
     /*!
      *  Set the current handle buffer to flush
      */
-    window.handles[3] = window.buffer_switch ? window.handles[1] : window.handles[2];
+    //window.handles[3] = window.buffer_switch ? window.handles[1] : window.handles[2];
 
     /*!
      * Write the drawn buffer to the current handle buffer
      */
     WriteConsoleOutputW(
-            window.handles[3], //! Current handle buffer
+            window.handles[0], //! Current handle buffer
             window.buffer,        //! Buffer drawn
             window.buff_size_ad_coord,     //! Size of the console
             window.window_coord_as_coord,    //! Coordinates of the console
             &window.console_write_rect);   //! Rectangle defined of the console
 
-    if (!SetConsoleActiveScreenBuffer(window.handles[3])) { //! Set the current handle buffer as the active console buffer
+    if (!SetConsoleActiveScreenBuffer(window.handles[0])) { //! Set the current handle buffer as the active console buffer
         exit(EXIT_FAILURE); //! Exit if fail
     }
 
@@ -237,14 +242,14 @@ void ztg_io(){
 
         window.key_old_state[i] = window.key_new_state[i];
     }
-
+    window.events = 0;
     GetNumberOfConsoleInputEvents(window.handle_in, &window.events);
     if (window.events > 0){
         ReadConsoleInput(window.handle_in, window.input_record, window.events, &window.events);
     }
 
     window.is_key_pressed = false;
-    for(int i = 0; i < window.events; i++) {
+    for(DWORD  i = 0; i < window.events; i++) {
         switch (window.input_record[i].EventType) {
             case KEY_EVENT: {
                 window.is_key_pressed = window.input_record[i].Event.KeyEvent.bKeyDown;
@@ -287,13 +292,12 @@ void ztg_io(){
 
             }break;
             case WINDOW_BUFFER_SIZE_EVENT:
-                SetConsoleScreenBufferSize(window.handles[3], window.buff_size_ad_coord);
-                SetConsoleWindowInfo(window.handles[3], TRUE, &window.console_write_rect);
+                SetConsoleScreenBufferSize(window.handles[0], window.buff_size_ad_coord);
+                SetConsoleWindowInfo(window.handles[0], TRUE, &window.console_write_rect);
                 break;
 
         }
     }
-    //FlushConsoleInputBuffer(window.handle_in);
 }
 
 /*!
@@ -302,4 +306,144 @@ void ztg_io(){
 void ztg_close(){
     SetConsoleActiveScreenBuffer(window.handles[0]);
     free(window.buffer);
+}
+
+ztg_on_init_callback ztg_on_init_callback_fun;
+ztg_on_update_callback ztg_on_update_callback_fun;
+ztg_on_handle_inputs_callback ztg_on_handle_inputs_callback_fun;
+ztg_on_destroy_callback ztg_on_destroy_callback_fun;
+
+void ztg_def_on_init(void){
+}
+
+void ztg_def_on_handle_inputs(void){
+}
+
+void ztg_def_on_update(float elapsedTime){
+
+        ztg_start_iteration();
+
+        /*Get the inputs from the user*/
+        //ztg_io();
+        
+        /*End the frame iteration*/
+        ztg_end_iteration();
+
+}
+
+void ztg_def_on_destroy(void){
+    ztg_close();
+}
+
+void ztg_setup_callbacks(ztg_on_init_callback on_init, ztg_on_handle_inputs_callback on_handle_input,ztg_on_update_callback on_update, ztg_on_destroy_callback on_destroy){
+    
+    if(on_init == NULL){
+        ztg_on_init_callback_fun = ztg_def_on_destroy;
+    }else{
+        ztg_on_init_callback_fun = on_init;
+    }
+
+    if(on_handle_input == NULL){
+        ztg_on_handle_inputs_callback_fun = ztg_def_on_handle_inputs;
+    }else{
+        ztg_on_handle_inputs_callback_fun = on_handle_input;
+    }
+
+    if(on_update == NULL){
+        ztg_on_update_callback_fun = ztg_def_on_update;
+    }else{
+        ztg_on_update_callback_fun = on_update;
+    }
+
+    if(on_destroy == NULL){
+        ztg_on_destroy_callback_fun = ztg_def_on_destroy;
+    }else{
+        ztg_on_destroy_callback_fun = on_destroy;
+    }
+}
+
+
+DWORD WINAPI ztg_game_thread(void* data){
+
+    ztg_on_init_callback_fun();
+
+    ztg_start_clock();
+
+    while (window.is_running) {
+        while (window.is_running) {
+            ztg_start_iteration();
+
+            ztg_io();
+            /*Handle the inputs received*/
+            ztg_on_handle_inputs_callback_fun();
+
+            /*Clear the background*/
+            ztg_clear(C_BLACK);
+            /*Update the frame passing the elapsed time*/
+            ztg_on_update_callback_fun(window.elapsed_time);
+            /*Swap the console buffers*/
+            ztg_swap_buffer();
+
+            ztg_end_iteration();
+
+        }
+
+        if(!window.is_running){
+            ztg_on_destroy_callback_fun();
+        }
+    }
+
+    return 0;
+}
+
+#define MAX_SEM_COUNT 10
+#define THREADCOUNT 12
+
+HANDLE ghSemaphore;
+
+void ztg_run(){
+    #if 0
+    ztg_on_init_callback_fun();
+
+    /*Start the console clock*/
+    ztg_start_clock();
+    
+    /*Check if the app is running*/
+    while (window.is_running) {
+
+        /*Start the frame iteration*/
+        ztg_start_iteration();
+
+        /*Get the inputs from the user*/
+        ztg_io();
+        /*Handle the inputs received*/
+        ztg_on_handle_inputs_callback_fun();
+
+        /*Clear the background*/
+        ztg_clear(C_BLACK);
+        /*Update the frame passing the elapsed time*/
+        ztg_on_update_callback_fun(window.elapsed_time);
+        /*Swap the console buffers*/
+        ztg_swap_buffer();
+        
+        /*End the frame iteration*/
+        ztg_end_iteration();
+    }
+
+    /*Sets the console to its original handle*/
+    ztg_on_destroy_callback_fun();
+    #else
+
+    DWORD game_thread_id;
+
+    ghSemaphore = CreateSemaphore( NULL, MAX_SEM_COUNT, MAX_SEM_COUNT, NULL);
+
+    HANDLE game_thread = CreateThread(NULL, 0, ztg_game_thread, NULL, 0, &game_thread_id);
+    
+    WaitForSingleObject(game_thread, INFINITE);
+
+    CloseHandle(ghSemaphore);
+
+    #endif
+
 }

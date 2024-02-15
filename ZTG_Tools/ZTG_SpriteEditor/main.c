@@ -12,12 +12,10 @@ void run(){
 
         /*Start the frame iteration*/
         ztg_start_iteration();
-
         /*Get the inputs from the user*/
         ztg_io();
         /*Handle the inputs received*/
         HandleInputs();
-
         /*Clear the background*/
         ztg_clear(C_BLACK );
         /*Update the frame passing the elapsed time*/
@@ -42,12 +40,7 @@ int main(int argc, char ** argv){
         exit(1);
     }
 
-    /*Start the console clock*/
-    ztg_start_clock();
+    ztg_setup_callbacks(Start, HandleInputs, Update, NULL);
 
-    Start();
-
-    run();
-
-    ztg_close();
+    ztg_run();
 }
