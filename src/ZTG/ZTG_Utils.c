@@ -171,7 +171,7 @@ iVec2 ztg_measure_text(short font_size_x, short font_size_y, char * text){
 
 Sprite ztg_create_sprite_from_file(const char * filename){
 
-    FILE *fp = fopen(filename, "r");
+    FILE *fp = fopen(filename, "rb");
 
     if(!fp){
         fprintf(stderr, "Couldn't open sprite file %s", filename);
@@ -181,24 +181,43 @@ Sprite ztg_create_sprite_from_file(const char * filename){
 
     Sprite sprite;
 
-    int curr_color = 0;
+    fread(&sprite.width, sizeof(int), 1, fp);
+	fread(&sprite.height, sizeof(int), 1, fp);
+
+    //fread(&sprite.pixels, sizeof(int), sprite.width * sprite.height, fp);
+    for(int i = 0; i < sprite.width * sprite.height; i++){
+        fread(&sprite.pixels[i], sizeof(int), 1, fp);
+    }
+
+    for(int i = 0; i < sprite.width * sprite.height; i++){
+        if(sprite.pixels[i] == 17) {
+            sprite.pixels[i] = C_BLACK;
+        }
+    }
+
+    /*int curr_color = 0;
 
     char sprite_size[3];
     memset(sprite_size, 0, sizeof(sprite_size));
+    char sprite_i_color[3];
+    memset(sprite_i_color, 0, sizeof(sprite_i_color));
 
     fread(sprite_size, sizeof(int), 1, fp);
     sprite.width = atoi(sprite_size);
     fread(sprite_size, sizeof(int), 1, fp);
     sprite.height = sprite.width;
+    //fread(fp, "%d %d", &sprite.width, &sprite.height);
 
     for(size_t i = 0; i < sprite.width * sprite.height; i++){
-            fscanf(fp, "%d", &curr_color);
-            if(curr_color != 17){ 
-                sprite.pixels[i] = ztg_get_color_from_value(curr_color);
+            //fscanf(fp, "%d", &curr_color);
+            fread(sprite_i_color, sizeof(int), 1, fp);
+            curr_color = atoi(sprite_i_color);
+            if(sprite.pixels[i] == 17){ 
+                sprite.pixels[i] = window.background_color;
             }else{
-                sprite.pixels[i] = ztg_get_color_from_value(window.background_color);
+                sprite.pixels[i] = curr_color;
             }
-    }
+    }*/
 
     fclose(fp);
 

@@ -7,6 +7,7 @@ typedef struct cell{
     int default_color;
     int curr_color;
     bool is_empty;
+    bool is_used;
 }Cell;
 
 typedef struct grid{
@@ -56,6 +57,44 @@ int g_save_pop_up_y;
 bool g_saved;
 
 bool g_has_changes = true;
+bool g_loaded_sprite = false;
+
+char g_sprite_name[256];
+Sprite g_loaded_sprite_s;
+
+void load_sprite_from_memory(char *filename){
+    
+    memcpy(g_sprite_name, filename, strlen(filename));
+    g_loaded_sprite = true;
+
+
+}
+
+void set_save_name_from_file(char *filename){
+
+    //g_file_name
+    size_t n = strlen(filename);
+    size_t i = 0;
+    while(n > 0 && filename[n-1] != '.'){
+        n--;
+    }
+
+    i = n;
+
+    while(i > 0 && filename[i-1] != '\\' ){
+        i--;
+    }
+
+    if(n > 0 && i > 0){
+        snprintf(g_file_name, n - i, "%.*s", n - i, filename);
+        //memcpy(g_file_name, filename, n);
+        g_file_name[n-1] = '\0';
+        g_default_sprite_name = false;
+    }else{
+        return;
+    }
+
+}
 
 static int draw_buttons(int buttons_count, int x, int y, int width, int height, int padding){
 
@@ -117,18 +156,55 @@ static void grid_init(int cell_width, int cell_height){
     g_grid.bounds.p2.x = g_grid.x + (g_cell_width * g_grid.cells_count_x + 2 * g_grid.padding_x);
     g_grid.bounds.p2.y = g_grid.y + (g_cell_height * g_grid.cells_count_y + 2 * g_grid.padding_y);
 
-    for(int i = 0; i < g_grid.cells_count_x; i++){
-        for(int j = 0; j < g_grid.cells_count_y; j++){
-            int idx = get_index_from_2d(i, j, g_max_cells);
-            g_grid.cells[idx].width = cell_width;
-            g_grid.cells[idx].height = cell_height;
-            if(g_is_size_updated && g_grid.cells[idx].curr_color != g_grid.cells[idx].default_color){
-                g_grid.cells[idx].curr_color = g_cell_states[idx].curr_color;
-                g_grid.cells[idx].is_empty = g_cell_states[idx].is_empty;
-            }else {
-                g_grid.cells[idx].default_color = (i + j) % 2 == 0 ? C_BLACK  : C_DARK_GRAY;
-                g_grid.cells[idx].curr_color = g_grid.cells[idx].default_color;
-                g_grid.cells[idx].is_empty = true;
+    for(int i = 0; i < 16 * 16; i++){
+        g_grid.cells[i].is_used = false;
+    }
+
+    if(g_loaded_sprite){
+
+        g_grid.cells_count_x = g_loaded_sprite_s.width;
+        g_grid.cells_count_y = g_loaded_sprite_s.height;
+
+        for(int i = 0; i < g_grid.cells_count_x; i++){
+            for(int j = 0; j < g_grid.cells_count_y; j++){
+                int idx_s = get_index_from_2d(i, j, g_loaded_sprite_s.width);
+                int idx_g = get_index_from_2d(j, i, g_max_cells);
+
+                g_grid.cells[idx_g].width = cell_width;
+                g_grid.cells[idx_g].height = cell_height;
+                g_grid.cells[idx_g].default_color = (i + j) % 2 == 0 ? C_BLACK  : C_DARK_GRAY;
+                g_grid.cells[idx_g].is_used = true;
+                int curr_color = g_loaded_sprite_s.pixels[idx_s];
+
+                if(curr_color == window.background_color){
+                    g_grid.cells[idx_g].curr_color = g_grid.cells[idx_g].default_color;
+                    g_grid.cells[idx_g].is_empty = true;
+                }else{
+                    g_grid.cells[idx_g].curr_color = curr_color;
+                    g_grid.cells[idx_g].is_empty = false;
+                }
+
+            }
+        }
+
+        g_loaded_sprite = false;
+    }else{
+
+        for(int i = 0; i < g_grid.cells_count_x; i++){
+            for(int j = 0; j < g_grid.cells_count_y; j++){
+                int idx = get_index_from_2d(j, i, g_max_cells);
+                g_grid.cells[idx].width = cell_width;
+                g_grid.cells[idx].height = cell_height;
+                if(g_is_size_updated && g_grid.cells[idx].curr_color != g_grid.cells[idx].default_color){
+                    g_grid.cells[idx].curr_color = g_cell_states[idx].curr_color;
+                    g_grid.cells[idx].is_empty = g_cell_states[idx].is_empty;
+                    g_grid.cells[idx].is_used = true;
+                }else {
+                    g_grid.cells[idx].default_color = (i + j) % 2 == 0 ? C_BLACK  : C_DARK_GRAY;
+                    g_grid.cells[idx].curr_color = g_grid.cells[idx].default_color;
+                    g_grid.cells[idx].is_empty = true;
+                    g_grid.cells[idx].is_used = true;
+                }       
             }
         }
     }
@@ -179,8 +255,8 @@ static void grid_draw(){
     int start_x = g_grid.x + g_grid.padding_x;
     int start_y = g_grid.y + g_grid.padding_y;
 
-    for(int i = 0; i < g_grid.cells_count_x; i++) {
-        for (int j = 0; j < g_grid.cells_count_y; j++) {
+    for(int i = 0; i < g_grid.cells_count_y; i++) {
+        for (int j = 0; j < g_grid.cells_count_x; j++) {
             int idx = get_index_from_2d(j, i, g_max_cells);
             if(draw_cell(start_x + (i * g_grid.cells[idx].width),
                       start_y + (j * g_grid.cells[idx].height),
@@ -398,30 +474,22 @@ static void save(){
     }
     strcat(file_name, ".zsprt");
 
-    FILE * fp = fopen(file_name, "w+");
+    FILE * fp = NULL;
+    fopen_s(&fp, file_name, "wb+");
 
     if(!fp){
         exit(1);
     }
 
-    fprintf(fp, "%d %d ", g_grid.cells_count_x, g_grid.cells_count_y);
+    fwrite(&g_grid.cells_count_x, sizeof(int), 1, fp);
+    fwrite(&g_grid.cells_count_y, sizeof(int), 1, fp);
 
-    /*for(size_t i = 0; i < g_grid.cells_count_y * g_grid.cells_count_x; i++){
-            if(g_grid.cells[i].is_empty){
-                fprintf(fp, "17 ");
-            }else {
-                fprintf(fp, "%d ", g_grid.cells[i].curr_color);
-            }
-    }*/
-    for(size_t i = 0; i < g_grid.cells_count_y; i++){
-        for(size_t j = 0; j < g_grid.cells_count_x; j++){
-            size_t idx = get_index_from_2d(j, i, 16);
-            if(g_grid.cells[i].is_empty){
-                fprintf(fp, "17 ");
-            }else {
-                fprintf(fp, "%d ", g_grid.cells[i].curr_color);
-            }
-        }
+    for(int i = 0; i < g_grid.cells_count_x; i++){
+        for(int j = 0; j < g_grid.cells_count_y; j++){
+            int idx = get_index_from_2d(i, j, 16);
+            int curr_color = g_grid.cells[idx].is_empty ? 17 : g_grid.cells[idx].curr_color;
+            fwrite(&curr_color, sizeof(int), 1, fp);
+        } 
     }
 
     fclose(fp);
@@ -573,14 +641,16 @@ void Start(){
 
     g_has_changes = true;
 
-    if(!g_is_grid_initialized){
+    if(g_loaded_sprite){
+        g_loaded_sprite_s = ztg_create_sprite_from_file(g_sprite_name);
+    }else if(!g_is_grid_initialized){
         grid_init(g_cell_width ,g_cell_height);
         g_is_grid_initialized = true;
-    } 
+    }
 }
 
 void Update(float elapsedTime){
-
+    
     ztg_render_string(font_ib8x8u, "COLORS: ", 5, 5, C_WHITE);
 
     g_color_selected = draw_buttons(15, 69, 5, 10, 10, 5);
@@ -621,6 +691,7 @@ void Update(float elapsedTime){
                 size_t idx = get_index_from_2d(j, i, g_max_cells);
                 g_cell_states[idx].curr_color = g_grid.cells[idx].curr_color;
                 g_cell_states[idx].is_empty = g_grid.cells[idx].is_empty;
+                g_cell_states[idx].is_used = i < 8 || j < 8 ? true : false;
             }
         }
     }else if(change_canvas_size_16x16_button()){
@@ -659,6 +730,7 @@ void Update(float elapsedTime){
 
     iVec2 mouse_pos = ztg_get_mouse_pos();
     ztg_draw_filled_circle(mouse_pos.x, mouse_pos.y, 2, g_mouse_color);
+    
 }
 
 static bool is_valid_char(KeyCode kc){

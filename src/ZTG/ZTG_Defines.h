@@ -180,7 +180,7 @@ typedef struct ztg_color{
 typedef struct ztg_sprite{
     size_t width;
     size_t height;
-    Color pixels[256];
+    int pixels[256];
 }Sprite;
 
 #define get_index_from_2d(x, y, width) ((y) * (width) + (x))

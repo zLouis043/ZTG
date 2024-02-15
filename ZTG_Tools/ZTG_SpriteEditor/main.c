@@ -34,13 +34,22 @@ void run(){
 }
 
 int main(int argc, char ** argv){
-     /*Init the console with a Title, width, height, the resolution on the x axis and y axis*/
-    ztg_init("Sprite Editor", 480, 250, 2, 2);
 
     save_file_name = zflag_str("save-as", "The name of the saved sprite", "new_sprite");
+    load_file_name = zflag_str("load-from", "Load a sprite from memory to modify.", "default");
 
     if (!zflag_parse(argc, argv)) {
         exit(1);
+    }
+
+    zflag_print_flags(stdout);
+
+    /*Init the console with a Title, width, height, the resolution on the x axis and y axis*/
+    ztg_init("Sprite Editor", 480, 250, 2, 2);
+
+    if(strcmp(*load_file_name, "default") != 0){
+        load_sprite_from_memory(*load_file_name);
+        set_save_name_from_file(*load_file_name);
     }
 
     ztg_setup_callbacks(Start, HandleInputs, Update, NULL);

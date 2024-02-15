@@ -193,10 +193,10 @@ void ztg_render_string(struct bitmap_font font, char * string, size_t x, size_t 
 }
 
 void ztg_draw_sprite(Sprite sprite, int x, int y){
-    for(size_t i = 0; i < sprite.height; i++){
-        for(size_t j = 0; j < sprite.width; j++){
-            ztg_draw_pixel(x + j, y + i, 
-            ztg_get_value_from_color(sprite.pixels[get_index_from_2d(j, i, sprite.width)])
+    for(size_t i = 0; i < sprite.width; i++){
+        for(size_t j = 0; j < sprite.height; j++){
+            ztg_draw_pixel(x + i, y + j, 
+            sprite.pixels[get_index_from_2d(i, j, sprite.width)]
             );
         }
     }
