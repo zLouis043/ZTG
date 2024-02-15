@@ -192,7 +192,7 @@ Sprite * ztg_create_sprite_from_file(const char * filename){
 
     fread(sprite_width, sizeof(int), 1, fp);
     sprite->width = atoi(sprite_width);
-
+    fread(sprite_height, sizeof(int), 1, fp);
     sprite->height = sprite->width;
 
     sprite->pixels = (Color*)malloc(sprite->width * sprite->height * sizeof(Color));

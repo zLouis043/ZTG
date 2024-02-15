@@ -529,8 +529,6 @@ static void save_before_exit(){
     }
 }
 
- Sprite * sprite;
-
 void Start(){
 
     g_color_selected = 15;
