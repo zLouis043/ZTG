@@ -87,3 +87,5 @@ int main(void){
 ```
 
 Every function pointer can be set to NULL and the engine will handle the function by itself with a default behaviour.
+
+## NOTE : The application created can only be opened correctly from the Windows Commands Prompt
